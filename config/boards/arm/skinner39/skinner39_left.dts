@@ -1,15 +1,6 @@
 #include "skinner39.dtsi"
 #include <dt-bindings/led/led.h>
-#include <input/processors.dtsi>
 
-&trackpad_listener {
-    input-processors = <&zip_xy_scaler 3 2>;
-
-    scroller {
-        layers = <5>;
-        input-processors = <&zip_xy_to_scroll_mapper>;
-    };
-};
 
 
 &pinctrl {
