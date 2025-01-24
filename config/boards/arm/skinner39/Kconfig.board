@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MIT
 
 config BOARD_SKINNER39_LEFT
-    bool "skinner39 keyboard left"
+    bool "keyball keyboard left"
     depends on SOC_NRF52840_QIAA
 
 
 
 config BOARD_SKINNER39_RIGHT
-    bool "skinner39 keyboard right"
+    bool "keyball keyboard right"
     depends on SOC_NRF52840_QIAA
