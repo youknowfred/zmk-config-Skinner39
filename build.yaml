@@ -1,0 +1,8 @@
+---
+include:
+  - board: skinner39_left
+    shield: nice_view
+    snippet: studio-rpc-usb-uart
+  - board: skinner39_right
+    shield: nice_view
+
