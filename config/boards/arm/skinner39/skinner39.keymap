@@ -44,7 +44,8 @@
 
         /* invent scrolling direction */
 
-        /* y-invert;
+	x-invert;
+        y-invert;
 
         /* align to CCW 45 degree */
         // rotate-deg = <315>;
