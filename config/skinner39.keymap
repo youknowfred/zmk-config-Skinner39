@@ -59,7 +59,7 @@
             >;
         };
 
-        scroll_layer {
+        snipe_layer {
             bindings = <
   &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
   &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
