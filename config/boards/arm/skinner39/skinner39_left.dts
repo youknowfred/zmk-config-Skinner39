@@ -1,6 +1,6 @@
 #include "skinner39.dtsi"
 #include <dt-bindings/led/led.h>
-
+#include <input/processors.dtsi>
 
 
 &pinctrl {
