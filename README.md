@@ -62,3 +62,40 @@ https://www.baj.r.jp/battery/safety/safety16.html
 
 ＊3 Choc V1、V2、MX軸対応のソケットは実装済みです。ロープロとハイプロファイルの両方の軸を好みに合わせ使用したい場合は、それぞれに対応したケースとプレートを別途ご購入してください。
 
+## 設定ガイド
+
+ Skinner39の設定方法
+
+·左手側がメインユニットです。
+
+·USB接続は左手側で行ってください。
+
+·なお、右手のみをPCに接続した場合、キーボードは動作しません。
+
+·PCのBluetooth一覧に表示される［Skinner39］を選択して接続します。
+
+·接続が完了すると、両手のOLEDに「Wi-Fi」マークと接続設備「番号」が表示されます。
+
+#  Bluetooth接続ができない場合
+
+1．［bt＿clr］キーと［2］キーを同時に押して、再度無線接続を試みてください。
+
+2．接続できない時、リセットボタン（ケース背面の丸いボタン）を1回押してリセットします。
+
+3．その後、再度［bt＿clr］キーと［2］キーを押して、無線接続を行ってください。
+
+<!-- 0 symbol_layer |SYM --- 1 Skp 6kp 6kp 6kp 6kp 6kp 5kp Skp 2 ! @ # &#36; % Y U 1 O P 3 6bt 6bt 6bt Strons 6kp Skp 6kp 4 BT_CLR BT_SEL O BT_SEL 1 BT_SEL 2 H J K 5kp Skp L ; (BT_CLR)Clear profile 5 Strons Gtrans Gtrans Gtrons Strans Skp Skp 6kp Skp 6kp 6 N M , / + Strans Gtrons Strons 6kp 1 Gtrans Strans Strans 6kp  -->
+![](https://web-api.textin.com/ocr_image/external/9f48b8ead660bd21.jpg)
+
+##  設定を間違えてしまった場合
+
+1． ZMK GitHub Actionsで再度フォークし、ファームウェアをダウンロードします。
+
+2．両手のキーボードをUSB接続します。
+
+3． リセットボタンを押すと、PCに「nice nano」というデバイスが表示されます。
+
+4．nice nanoにリセットファイルを貼り付けます。
+
+5．リセット完了となります。
+
