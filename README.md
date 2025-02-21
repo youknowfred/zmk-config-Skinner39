@@ -93,9 +93,9 @@ https://www.baj.r.jp/battery/safety/safety16.html
 
 2．両手のキーボードをUSB接続します。
 
-3． リセットボタンを押すと、PCに「nice nano」というデバイスが表示されます。
+3． リセットボタンを押すと、PCに「keyball」というデバイスが表示されます。
 
-4．nice nanoにリセットファイルを貼り付けます。
+4．Keyballにリセットファイルを貼り付けます。
 
 5．リセット完了となります。
 
