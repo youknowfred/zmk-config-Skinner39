@@ -5,6 +5,4 @@ include:
     snippet: studio-rpc-usb-uart
   - board: skinner39_right
     shield: nice_view
-  - board: skinner39_left
-    shield: settings_reset
-    snippet: studio-rpc-usb-uart
+
