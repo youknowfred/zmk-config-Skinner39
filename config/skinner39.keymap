@@ -4,17 +4,19 @@
 #include <dt-bindings/zmk/pointing.h>
 #include <input/processors.dtsi>
 
-// Configure trackball behavior for automatic scroll mode on layer 2
-&trackball_listener {
-    input-processors = <&zip_xy_scaler 1 1>;
-    
-    scroll_mode {
-        layers = <2>;
-        input-processors = <&zip_xy_to_scroll_mapper>;
-    };
-};
-
 / {
+    // Define the trackball listener with automatic scroll mode on layer 2
+    trackball_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
+        input-processors = <&zip_xy_scaler 1 1>;
+        
+        scroll_mode {
+            layers = <2>;
+            input-processors = <&zip_xy_to_scroll_mapper>;
+        };
+    };
+
     behaviors {
         hml: homerow_mods_left {
             compatible = "zmk,behavior-hold-tap";
