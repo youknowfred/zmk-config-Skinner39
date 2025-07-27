@@ -199,7 +199,7 @@
             bindings = <
   &trans          &kp ESC       &trans        &trans        &trans                          &trans          &zoom_out       &zoom_in        &trans          &trans
   &kp LBRC        &screenshot   &kp COLON     &kp SEMI      &kp RBRC                        &trans          &word_left      &word_right     &trans          &trans
-  &trans          &kp PIPE      &trans        &trans        &trans                          &trans          &mkp LCLK       &mkp RCLK       &trans          &trans
+  &trans          &kp PIPE      &trans        &trans        &trans                          &trans          &mkp MCLK       &trans          &trans          &trans
   &trans          &brightness_up &brightness_down &launchpad &mission_control &trans &trans &make_cmd                                                      &trans
             >;
         };
