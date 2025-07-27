@@ -190,7 +190,7 @@
   &kp EXCL        &kp AT        &kp UP        &kp DLLR      &kp PRCNT                       &kp ASTRK       &kp N7          &kp N8          &kp N9          &kp MINUS
   &kp LPAR        &kp LEFT      &kp DOWN      &kp RIGHT     &kp RPAR                        &kp PIPE        &kp N4          &kp N5          &kp N6          &kp PLUS
   &kp CAPS        &kp TILDE     &kp HASH      &kp CARET     &kp EQUAL                       &kp AMPS        &kp N1          &kp N2          &kp N3          &kp N0
-  &trans          &trans        &mkp MCLK     &mkp LCLK     &trans        &trans    &trans  &trans                                                          &mkp LCLK
+  &trans          &trans        &mkp MCLK     &mkp LCLK     &trans        &trans    &trans  &trans                                                          &mkp RCLK
             >;
         };
 
@@ -200,7 +200,7 @@
   &trans          &kp ESC       &trans        &trans        &trans                          &trans          &zoom_out       &zoom_in        &trans          &trans
   &kp LBRC        &screenshot   &kp COLON     &kp SEMI      &kp RBRC                        &trans          &word_left      &word_right     &trans          &trans
   &trans          &kp PIPE      &trans        &trans        &trans                          &trans          &mkp LCLK       &mkp RCLK       &trans          &trans
-  &trans          &brightness_up &brightness_down &launchpad &mission_control &trans &trans &make_cmd                                                       &trans
+  &trans          &brightness_up &brightness_down &launchpad &mission_control &trans &trans &make_cmd                                                      &trans
             >;
         };
 
