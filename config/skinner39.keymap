@@ -153,13 +153,13 @@
             bindings = <&kp F3>;
         };
 
-        make_cmd: make_cmd {
+        code_block: code_block {
             compatible = "zmk,behavior-macro";
-            label = "MAKE_CMD";
+            label = "CODE_BLOCK";
             #binding-cells = <0>;
             wait-ms = <40>;
             tap-ms = <40>;
-            bindings = <&kp M &kp A &kp K &kp E>;
+            bindings = <&kp GRAVE &kp GRAVE &kp GRAVE>;
         };
 
         macro10: macro10 {
@@ -183,10 +183,10 @@
 
         default_layer {
             bindings = <
-  &kp Q          &kp W      &kp E  &kp R     &kp T                                                  &kp Y               &kp U  &kp I      &kp O    &kp P
-  &hml LSHIFT A  &kp S      &kp D  &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
-  &my_lt 2 Z     &kp X      &kp C  &kp V     &kp B                                                  &kp N               &kp M  &kp COMMA  &kp DOT  &my_lt 2 FSLH
-  &macro10       &kp LCTRL  &mo 5  &mkp MB1  &my_lt 1 SPACE  &mt LEFT_GUI TAB  &mt RIGHT_GUI ENTER  &my_lt 1 BACKSPACE                             &mkp MB1
+  &kp Q          &kp W      &kp E        &kp R     &kp T                                                  &kp Y               &kp U  &kp I      &kp O    &kp P
+  &hml LSHIFT A  &kp S      &kp D        &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
+  &my_lt 2 Z     &kp X      &kp C        &kp V     &kp B                                                  &kp N               &kp M  &kp COMMA  &kp DOT  &my_lt 2 FSLH
+  &macro10       &kp LCTRL  &code_block  &mkp MB1  &my_lt 1 SPACE  &mt LEFT_GUI TAB  &mt RIGHT_GUI ENTER  &my_lt 1 BACKSPACE                             &mkp MB1
             >;
         };
 
@@ -204,7 +204,7 @@
   &trans    &kp ESC         &trans            &trans      &trans                          &trans  &zoom_out   &zoom_in     &trans  &trans
   &kp LBRC  &screenshot     &kp COLON         &kp SEMI    &kp RBRC                        &trans  &word_left  &word_right  &trans  &trans
   &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
-  &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &make_cmd
+  &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
             >;
         };
 
