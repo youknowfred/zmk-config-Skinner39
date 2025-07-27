@@ -4,6 +4,57 @@
 #include <dt-bindings/zmk/pointing.h>
 
 / {
+    macros {
+        screenshot: screenshot {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LG(KP_NUMBER_4))>;
+            label = "SCREENSHOT";
+        };
+
+        zoom_in: zoom_in {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(PLUS)>;
+            label = "ZOOM_IN";
+        };
+
+        zoom_out: zoom_out {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RG(KP_MINUS)>;
+            label = "ZOOM_OUT";
+        };
+
+        mission_ctrl: mission_ctrl {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LC(UP_ARROW)>;
+            label = "MISSION_CTRL";
+        };
+
+        code_block: code_block {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp GRAVE &kp GRAVE &kp GRAVE &kp RET &kp GRAVE &kp GRAVE &kp GRAVE>;
+            label = "CODE_BLOCK";
+        };
+
+        full_screen_left: full_screen_left {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RC(LEFT)>;
+            label = "FULL_SCREEN_LEFT";
+        };
+
+        full_screen_right: full_screen_right {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RC(RIGHT)>;
+            label = "FULL_SCREEN_RIGHT";
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
