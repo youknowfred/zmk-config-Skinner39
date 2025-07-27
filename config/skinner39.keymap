@@ -166,7 +166,7 @@
   &kp Q           &kp W         &kp E         &kp R         &kp T                                    &kp Y            &kp U         &kp I         &kp O         &kp P
   &hml LSHIFT A   &kp S         &kp D         &kp F         &kp G                                    &kp H            &kp J         &kp K         &kp L         &hmr RSHIFT SQT
   &my_lt 2 Z      &kp X         &kp C         &kp V         &kp B                                    &kp N            &kp M         &kp COMMA     &kp DOT       &my_lt 2 FSLH
-  &macro10        &kp LCTRL     &mkp MCLK     &mkp LCLK     &my_lt 1 SPACE  &my_lt 5 TAB    &wm LGUI ENTER  &my_lt 1 BACKSPACE                                        &mkp LCLK
+  &macro10        &kp LCTRL     &mkp MCLK     &mkp LCLK     &my_lt 1 SPACE  &my_lt 5 TAB    &my_lt 3 ENTER  &my_lt 1 BACKSPACE                                        &mkp LCLK
             >;
         };
 
@@ -183,8 +183,8 @@
             bindings = <
   &trans          &kp ESC       &trans        &trans        &trans                          &trans          &zoom_out       &zoom_in        &trans          &trans
   &kp LBRC        &screenshot   &kp COLON     &kp SEMI      &kp RBRC                        &trans          &word_left      &word_right     &trans          &trans
-  &trans          &kp PIPE      &trans        &trans        &trans                          &trans          &mkp MCLK       &trans          &trans          &trans
-  &trans          &brightness_up &brightness_down &launchpad &mission_control &trans &trans &make_cmd                                                      &trans
+  &trans          &kp PIPE      &trans        &trans        &trans                          &mkp LCLK       &mkp MCLK       &mkp RCLK       &trans          &trans
+  &trans          &brightness_up &brightness_down &launchpad &mission_control &trans &trans &trans                                                      &make_cmd
             >;
         };
 
@@ -202,6 +202,15 @@
   &kp N1          &kp N2        &kp N3        &kp N4        &kp N5                          &kp N6          &kp N7          &kp N8          &kp N9          &kp N0
   &kp LEFT        &kp DOWN      &kp UP        &kp RIGHT     &trans                          &kp PAGE_UP     &mkp LCLK       &trans          &mkp RCLK       &mkp MCLK
   &trans          &trans        &trans        &trans        &trans                          &kp PAGE_DOWN   &trans          &trans          &trans          &trans
+  &trans          &trans        &trans        &trans        &trans        &trans    &trans  &trans                                                          &trans
+            >;
+        };
+
+        scroll_layer {
+            bindings = <
+  &trans          &trans        &trans        &trans        &trans                          &trans          &trans          &trans          &trans          &trans
+  &trans          &trans        &trans        &trans        &trans                          &trans          &trans          &trans          &trans          &trans
+  &trans          &trans        &trans        &trans        &trans                          &trans          &trans          &trans          &trans          &trans
   &trans          &trans        &trans        &trans        &trans        &trans    &trans  &trans                                                          &trans
             >;
         };
