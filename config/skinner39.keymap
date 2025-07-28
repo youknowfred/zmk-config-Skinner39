@@ -4,21 +4,15 @@
 #include <dt-bindings/zmk/pointing.h>
 #include <input/processors.dtsi>
 
-/ {
-    #ifdef CONFIG_BOARD_SKINNER39_RIGHT
-    // Define the trackball listener with automatic scroll mode on layer 2 (right side only)
-    trackball_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
-        input-processors = <&zip_xy_scaler 1 1>;
-        
-        scroll_mode {
-            layers = <2>;
-            input-processors = <&zip_xy_to_scroll_mapper>;
-        };
+// Override the PMW listener to use layer 2 for scroll mode instead of layer 5
+&pmw_listener {
+    scroller {
+        layers = <2>;  // Changed from 5 to 2
+        input-processors = <&zip_xy_to_scroll_mapper>;
     };
-    #endif
+};
 
+/ {
     behaviors {
         hml: homerow_mods_left {
             compatible = "zmk,behavior-hold-tap";
@@ -213,7 +207,7 @@
         macro_layer {
             bindings = <
   &trans    &kp ESC         &trans            &trans      &trans                          &trans  &zoom_out   &zoom_in     &trans  &trans
-  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &trans  &word_left  &word_right  &trans  &trans
+  &kp LBRC  &screenshot     &kp SEMI          &kp COLON    &kp RBRC                        &trans  &word_left  &word_right  &trans  &trans
   &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
   &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
             >;
