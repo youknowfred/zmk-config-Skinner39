@@ -3,12 +3,14 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 #include <input/processors.dtsi>
+#include <dt-bindings/zmk/input_transform.h>
 
 // Override the PMW listener to use layer 2 for scroll mode instead of layer 5
 &pmw_listener {
     scroller {
         layers = <2>;  // Changed from 5 to 2
-        input-processors = <&zip_xy_to_scroll_mapper>;
+        // Invert Y axis before converting to scroll for natural scrolling
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, <&zip_xy_to_scroll_mapper>;
     };
 };
 
@@ -207,7 +209,7 @@
         macro_layer {
             bindings = <
   &trans    &kp ESC         &trans            &trans      &trans                          &trans  &zoom_out   &zoom_in     &trans  &trans
-  &kp LBRC  &screenshot     &kp SEMI          &kp COLON    &kp RBRC                        &trans  &word_left  &word_right  &trans  &trans
+  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &trans  &word_left  &word_right  &trans  &trans
   &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
   &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
             >;
