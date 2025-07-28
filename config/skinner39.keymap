@@ -202,14 +202,14 @@
   &kp EXCL  &kp AT     &kp UP    &kp DLLR   &kp PRCNT                  &kp ASTRK  &kp N7  &kp N8  &kp N9  &kp MINUS
   &kp LPAR  &kp LEFT   &kp DOWN  &kp RIGHT  &kp RPAR                   &kp PIPE   &kp N4  &kp N5  &kp N6  &kp PLUS
   &kp CAPS  &kp TILDE  &kp HASH  &kp CARET  &kp EQUAL                  &kp AMPS   &kp N1  &kp N2  &kp N3  &kp N0
-  &trans    &code_block     &mkp MB2  &mkp MB1   &trans     &trans  &trans  &trans                             &mkp MB1
+  &trans    &trans     &mkp MB2  &mkp MB1   &trans     &trans  &trans  &trans                             &mkp MB1
             >;
         };
 
         macro_layer {
             bindings = <
-  &trans    &kp ESC         &trans            &trans      &trans                          &trans  &zoom_out   &zoom_in     &trans  &trans
-  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &trans  &word_left  &word_right  &trans  &trans
+  &trans    &kp ESC         &trans            &trans      &trans                          &code_block  &zoom_out   &zoom_in     &trans  &trans
+  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &kp UNDER  &word_left  &word_right  &trans  &trans
   &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
   &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
             >;
