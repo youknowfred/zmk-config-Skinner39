@@ -5,7 +5,8 @@
 #include <input/processors.dtsi>
 
 / {
-    // Define the trackball listener with automatic scroll mode on layer 2
+    #ifdef CONFIG_BOARD_SKINNER39_RIGHT
+    // Define the trackball listener with automatic scroll mode on layer 2 (right side only)
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
@@ -16,6 +17,7 @@
             input-processors = <&zip_xy_to_scroll_mapper>;
         };
     };
+    #endif
 
     behaviors {
         hml: homerow_mods_left {
