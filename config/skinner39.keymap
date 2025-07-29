@@ -21,7 +21,7 @@
             label = "HOMEROW_MODS_LEFT";
             #binding-cells = <2>;
             flavor = "tap-unless-interrupted";  // Better for homerow mods
-            tapping-term-ms = <135>;            // Much faster activation
+            tapping-term-ms = <160>;            // Much faster activation
             quick-tap-ms = <0>;                 // Disable quick-tap for homerow mods
             require-prior-idle-ms = <0>;        // No idle requirement
             bindings = <&kp>, <&kp>;
