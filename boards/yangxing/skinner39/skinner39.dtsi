@@ -105,6 +105,11 @@
     status = "okay";
 };
 
+/* P0.09 is used as a matrix column — free the NFC pins for GPIO (Zephyr 4.1+) */
+&uicr {
+    nfct-pins-as-gpios;
+};
+
 zephyr_udc0:&usbd {
 		status = "okay";
 };

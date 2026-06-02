@@ -4,24 +4,17 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: badjeff
       url-base: https://github.com/badjeff
-    - name: yangxing
-      url-base: https://github.com/yangxing844
   projects:
     - name: zmk
       remote: zmk
-      revision: d09087f4dc280b8fdb1d32d63b03cc10162b89ce  # ZMK main @ 2025-07-26 — fw15 build era (pinned for reproducibility)
+      revision: 26246da1b69733b224a33d82b33750541cd5933a  # current ZMK main (post-HWMv2 / Zephyr 4.1) — re-pin to the green commit after CI passes
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: badjeff
-      revision: 14d39b7a6944d1014544a2382707b14724c22f49  # 2025-07-15 — before 'motion-gpios' became required
-    - name: zmk-split-peripheral-input-relay
-      remote: badjeff
-      revision: f49a5ca22a7b5626e37cffc73e97e64945bf9eb0  # 2024-12-12
-    - name: zmk-input-behavior-listener
-      remote: badjeff
-      revision: 80fc27026a28b99b6d3301898bcd894675e4e8a3  # 2024-12-12
-    - name: zmk-lpm009m360a-driver
-      remote: yangxing
-      revision: b5e5acd3a7360005d50eedd64e05e63984f0dfca  # 2024-08-27
+      revision: 44b4a76b74d293a93cec4ccb7e04cb8d29c10f93  # main / "zmk-0.4": pixart,pmw3610-alt + CONFIG_PMW3610_ALT_*
   self:
     path: config
+# Dropped vs fw15 (now built into ZMK core, were breaking the build):
+#   zmk-split-peripheral-input-relay  -> core `zmk,input-split`
+#   zmk-input-behavior-listener       -> core `zmk,input-listener` + input-processors
+#   zmk-lpm009m360a-driver            -> unused (display is nice_view)

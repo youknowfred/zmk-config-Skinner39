@@ -1,0 +1,16 @@
+file_format: "1"
+id: skinner39
+name: Skinner39
+type: board
+url: https://github.com/youknowfred/zmk-config-Skinner39
+arch: arm
+features:
+  - keys
+  - display
+  - studio
+outputs:
+  - usb
+  - ble
+siblings:
+  - skinner39_left//zmk
+  - skinner39_right//zmk

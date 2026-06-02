@@ -1,0 +1,15 @@
+identifier: skinner39
+name: skinner39
+type: keyboard
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+supported:
+  - gpio
+  - spi
+  - usb_device
+  - nvs
+  - kscan
+  - ble
