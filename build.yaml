@@ -1,16 +1,16 @@
 ---
 include:
-  - board: skinner39_left
+  - board: skinner39_left/nrf52840/zmk
     shield: nice_view
     snippet: studio-rpc-usb-uart
-  - board: skinner39_right
+  - board: skinner39_right/nrf52840/zmk
     shield: nice_view
   # --- Settings-reset firmware (safety net) ---
   # After a push, download the artifact and drag the *settings_reset* UF2 onto the
   # 'keyball' bootloader drive on BOTH halves to wipe BT bonds / stored settings,
   # then re-flash the normal firmware. Verify this builds green before relying on it.
-  - board: skinner39_left
+  - board: skinner39_left/nrf52840/zmk
     shield: settings_reset
-  - board: skinner39_right
+  - board: skinner39_right/nrf52840/zmk
     shield: settings_reset
 
