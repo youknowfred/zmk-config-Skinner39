@@ -9,19 +9,19 @@ manifest:
   projects:
     - name: zmk
       remote: zmk
-      revision: main
+      revision: d09087f4dc280b8fdb1d32d63b03cc10162b89ce  # ZMK main @ 2025-07-26 — fw15 build era (pinned for reproducibility)
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: badjeff
-      revision: main
+      revision: 14d39b7a6944d1014544a2382707b14724c22f49  # 2025-07-15 — before 'motion-gpios' became required
     - name: zmk-split-peripheral-input-relay
       remote: badjeff
-      revision: main
+      revision: f49a5ca22a7b5626e37cffc73e97e64945bf9eb0  # 2024-12-12
     - name: zmk-input-behavior-listener
       remote: badjeff
-      revision: main
+      revision: 80fc27026a28b99b6d3301898bcd894675e4e8a3  # 2024-12-12
     - name: zmk-lpm009m360a-driver
       remote: yangxing
-      revision: master
+      revision: b5e5acd3a7360005d50eedd64e05e63984f0dfca  # 2024-08-27
   self:
     path: config
