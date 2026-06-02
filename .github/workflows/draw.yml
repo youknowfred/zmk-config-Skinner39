@@ -1,0 +1,40 @@
+name: Draw keymap
+
+# Auto-renders keymap-drawer/skinner39.svg whenever the keymap (or drawer config) changes,
+# so the cheat-sheet never goes stale. Commits the updated SVG back to the branch.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'config/skinner39.keymap'
+      - 'keymap-drawer/keymap_drawer.config.yaml'
+      - 'keymap-drawer/skinner39.layout.json'
+      - '.github/workflows/draw.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install keymap-drawer
+        run: pip install "keymap-drawer==0.23.0"
+      - name: Parse + draw
+        run: |
+          CFG=keymap-drawer/keymap_drawer.config.yaml
+          keymap -c "$CFG" parse -z config/skinner39.keymap -o keymap-drawer/skinner39.dwg.yaml
+          keymap -c "$CFG" draw keymap-drawer/skinner39.dwg.yaml \
+            -j keymap-drawer/skinner39.layout.json -l default_transform \
+            -o keymap-drawer/skinner39.svg
+      - name: Commit updated diagram
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add keymap-drawer/skinner39.svg keymap-drawer/skinner39.dwg.yaml
+          git diff --cached --quiet || git commit -m "Auto-update keymap diagram [skip ci]"
+          git push

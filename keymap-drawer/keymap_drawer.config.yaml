@@ -1,0 +1,46 @@
+draw_config:
+  dark_mode: false          # force light theme (readable in any viewer / dark-mode macOS)
+  key_w: 68.0
+  key_h: 62.0
+  n_columns: 1
+  append_colon_to_layer_header: true
+  shrink_wide_legends: 8     # auto-shrink long legends so they fit inside the key
+  legend_rel_y: 0.0
+
+parse_config:
+  skip_binding_parsing: false
+  # Friendly, short legends so nothing overflows the key
+  raw_binding_map:
+    "&macro1": "email"
+    "&macro2": "=>"
+    "&macro3": "git ci"
+    "&macro4": "screen\nshot"
+    "&macro5": "copy/\npaste"
+    "&macro6": "alt-tab"
+    "&triple_backticks": "```"
+    "&macro8": "save\nall"
+    "&macro9": "dev\ntools"
+    "&macro10": "regards"
+    "&mkp LCLK": "L-click"
+    "&mkp MCLK": "M-click"
+    "&mkp RCLK": "R-click"
+    "&mkp MB1": "L-click"
+    "&mkp MB2": "R-click"
+    "&mkp MB3": "M-click"
+    "&mkp MB4": "btn 4"
+    "&mkp MB5": "btn 5"
+    "&bt BT_CLR": "BT clr"
+    "&bt BT_SEL 0": "BT 0"
+    "&bt BT_SEL 1": "BT 1"
+    "&bt BT_SEL 2": "BT 2"
+    "&bt BT_SEL 3": "BT 3"
+    "&bootloader": "boot"
+    "&sys_reset": "reset"
+    "&kp C_BRI_UP": "bri +"
+    "&kp C_BRI_DN": "bri -"
+    "&kp C_VOL_UP": "vol +"
+    "&kp C_VOL_DN": "vol -"
+    "&kp C_MUTE": "mute"
+    "&kp C_PP": "play"
+    "&kp C_NEXT": "next"
+    "&kp C_PREV": "prev"
