@@ -4,9 +4,7 @@ CONFIG_INPUT=y
 # pointing config consolidated into config/skinner39.conf + the trackball DT node
 
 CONFIG_ZMK_EXT_POWER=y
-CONFIG_SOC_SERIES_NRF52X=y
-CONFIG_SOC_NRF52840_QIAA=y
-CONFIG_BOARD_SKINNER39_RIGHT=y
+# (board + SoC are selected by board.yml + Kconfig.skinner39_right under HWMv2)
 
 CONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=4000
 CONFIG_ZMK_DISPLAY=y
