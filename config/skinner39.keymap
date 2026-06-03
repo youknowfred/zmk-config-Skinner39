@@ -5,12 +5,26 @@
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 
-// Override the PMW listener to use layer 2 for scroll mode instead of layer 5
+// === P0-1 PROBE for zmk#2967 layer-override isolation — THROWAWAY, do not merge ===
+// Question: does a layer-scoped child input-processor SUPPRESS the listener's unscoped base
+// chain on its layer, or does the base "leak" onto that layer too?
+//
+// Setup: base (top-level, ALL layers) = scroll-mapper -> the ball SCROLLS everywhere.
+//        a layer-1-scoped `sniper` = a slow scaler with NO scroll-mapper -> SHOULD suppress
+//        the base on layer 1 (number layer, reached by holding SPACE / BACKSPACE).
+//
+// TEST on-device:
+//   1. Base layer: move trackball -> the page SCROLLS (confirms the base applies).
+//   2. Hold SPACE (activates layer 1) and move the trackball:
+//        * still SCROLLS  => the base leaked across layers  => #2967 isolation FAILS
+//                            (per-layer pointer overrides are unreliable on this ZMK rev)
+//        * slow POINTER, no scroll => sniper suppressed the base => #2967 isolation WORKS
+//   3. Reflash the normal LEFT firmware to revert (this build only changes the keymap).
 &pmw_listener {
-    scroller {
-        layers = <2>;  // Changed from 5 to 2
-        // Invert Y axis and reduce scroll sensitivity (1/4 speed)
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll_mapper>;
+    input-processors = <&zip_xy_to_scroll_mapper>;
+    sniper {
+        layers = <1>;
+        input-processors = <&zip_xy_scaler 1 8>;
     };
 };
 
