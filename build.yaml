@@ -1,10 +1,10 @@
 ---
 include:
   - board: skinner39_left/nrf52840/zmk
-    shield: nice_view
+    shield: keysmith_glance
     snippet: studio-rpc-usb-uart
   - board: skinner39_right/nrf52840/zmk
-    shield: nice_view
+    shield: keysmith_glance
   # --- Settings-reset firmware (safety net — central/left half) ---
   # Drag the *settings_reset* UF2 onto the 'keyball' bootloader drive to wipe the
   # central's stored settings (BT bonds + any ZMK Studio keymap overlay), then
