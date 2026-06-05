@@ -171,11 +171,11 @@ layers:
   - '8'
   - '9'
   - '0'
-  - LEFT
-  - DOWN
-  - UP
-  - RIGHT
-  - {t: ▽, type: trans}
+  - btn 4
+  - M-click
+  - R-click
+  - L-click
+  - btn 5
   - PAGE UP
   - L-click
   - {t: ▽, type: trans}
