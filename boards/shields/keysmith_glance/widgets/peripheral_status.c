@@ -114,25 +114,10 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, CANVAS_SIZE, CANVAS_SIZE, CANVAS_COLOR_FORMAT);
 
-    // Static Keysmith trackball glyph, drawn ONCE. Deliberately NOT a live activity indicator:
-    // the right OLED shares spi2 with the 600-CPI trackball, so redrawing during motion would
-    // inject pointer jitter (design 03 §4). Mode also isn't locally knowable (no keymap state here).
-    lv_obj_t *glyph = lv_canvas_create(widget->obj);
-    lv_obj_align(glyph, LV_ALIGN_TOP_LEFT, 0, 0);
-    lv_canvas_set_buffer(glyph, widget->cbuf2, CANVAS_SIZE, CANVAS_SIZE, CANVAS_COLOR_FORMAT);
-    lv_draw_rect_dsc_t glyph_bg;
-    init_rect_dsc(&glyph_bg, LVGL_BACKGROUND);
-    canvas_draw_rect(glyph, 0, 0, CANVAS_SIZE, CANVAS_SIZE, &glyph_bg);
-    lv_draw_arc_dsc_t ball_ring;
-    init_arc_dsc(&ball_ring, LVGL_FOREGROUND, 2);
-    canvas_draw_arc(glyph, 34, 27, 22, 0, 360, &ball_ring);
-    lv_draw_arc_dsc_t ball_dot;
-    init_arc_dsc(&ball_dot, LVGL_FOREGROUND, 7);
-    canvas_draw_arc(glyph, 34, 27, 3, 0, 360, &ball_dot);
-    lv_draw_label_dsc_t ks_dsc;
-    init_label_dsc(&ks_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_CENTER);
-    canvas_draw_text(glyph, 0, 50, 68, &ks_dsc, "ks");
-    rotate_canvas(glyph);
+    lv_obj_t *art = lv_img_create(widget->obj);
+    bool random = sys_rand32_get() & 1;
+    lv_image_set_src(art, random ? &balloon : &mountain);
+    lv_obj_align(art, LV_ALIGN_TOP_LEFT, 0, 0);
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
