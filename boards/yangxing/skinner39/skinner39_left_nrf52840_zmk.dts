@@ -2,7 +2,7 @@
 #include <dt-bindings/led/led.h>
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>          /* INPUT_TRANSFORM_Y_INVERT (scroll Y-invert) */
-// #include <behaviors/input_gestures_accel.dtsi>     /* T1-A acceleration — uncomment to enable (see 06-...md) */
+#include <behaviors/input_gestures_accel.dtsi>        /* T1-A acceleration */
 
 
 &pinctrl {
@@ -84,12 +84,10 @@ nice_view_spi: &spi2 {
 	 * default. Enable per keysmith-design/06-trackball-T0-T1-implementation.md.
 	 */
 
-	/* --- T1-A base chain (STAGED): uncomment to apply acceleration on every layer.
-	 *     Snipe/scroll overrides REPLACE the base chain, so accel never stacks with
-	 *     the 1/3 snipe scaler (no double-attenuation).  Requires: west.yml accel
-	 *     project + the include at the top of this file + the &pointer_accel block.
-	 * input-processors = <&pointer_accel>;
-	 */
+	/* T1-A base chain: acceleration on every layer. The snipe/scroll child overrides
+	 * REPLACE the base chain on their layers, so accel never stacks with the 1/3 snipe
+	 * scaler (no double-attenuation). */
+	input-processors = <&pointer_accel>;
 
 	/* SNIPE — layer 6: 1/3 precision. Stock zip_xy_scaler already tracks remainders. */
 	snipe {
@@ -109,32 +107,30 @@ nice_view_spi: &spi2 {
 	};
 };
 
-/* ====================== STAGED FIRMWARE (off by default) ======================
- * Uncomment these together with the matching west.yml / include / base-chain
- * lines above, ONE STAGE PER FLASH. Full steps + tuning + A/B + rollback:
- *   keysmith-design/06-trackball-T0-T1-implementation.md
- *
- * --- T1-A: acceleration parameters (velocity curve = auto-snipe + reach) ---
- * &pointer_accel {
- *     input-type = <INPUT_EV_REL>;
- *     track-remainders;
- *     min-factor = <800>;           // 0.8x at slow speed  -> precision "just happens"
- *     max-factor = <1800>;          // 1.8x at fast speed   (conservative; raise after soak)
- *     speed-threshold = <1200>;     // counts/s where factor = 1.0  (SEED — tune on a frozen macOS curve)
- *     speed-max = <6000>;           // counts/s where factor reaches max
- *     acceleration-exponent = <2>;  // quadratic
- * };
- *
- * --- T1-C: motion-triggered mouse layer (clicks under the resting LEFT hand) ---
- *   ALSO requires the mouse_layer click re-home in the keymap (see 06-...md), or
- *   the auto-raised clicks land on the arrow keys. Base chain becomes:
- *       input-processors = <&pointer_accel &zip_temp_mouse 4 300>;   // accel first, temp-layer last
+/* T1-A: acceleration parameters (velocity curve = auto-snipe at slow speed + reach at fast).
+ * Patches the &pointer_accel node provided by <behaviors/input_gestures_accel.dtsi>.
+ * TUNE on a FROZEN macOS curve:  defaults write -g com.apple.mouse.scaling -integer -1  (log out). */
+&pointer_accel {
+	input-type = <INPUT_EV_REL>;
+	track-remainders;
+	min-factor = <800>;           /* 0.8x at slow speed -> precision "just happens" */
+	max-factor = <1800>;          /* 1.8x at fast speed (conservative; raise toward 2500 after soak) */
+	speed-threshold = <1200>;     /* counts/s where factor = 1.0 (SEED — re-tune from on-device cps) */
+	speed-max = <6000>;           /* counts/s where factor reaches max */
+	acceleration-exponent = <2>;  /* quadratic */
+};
+
+/* ====================== STAGED: T1-C (off by default) ======================
+ * Motion-triggered mouse layer (clicks under the resting LEFT hand). ALSO needs the
+ * mouse_layer click re-home in the keymap (see 06-...md) or auto-raised clicks land on
+ * the arrow keys. To enable, set the base chain to:
+ *     input-processors = <&pointer_accel &zip_temp_mouse 4 300>;   // accel first, temp-layer last
  * / {
  *     input_processors {
  *         zip_temp_mouse: zip_temp_mouse {
  *             compatible = "zmk,input-processor-temp-layer";
  *             #input-processor-cells = <2>;        // <layer> <deactivate-timeout-ms>
- *             require-prior-idle-ms = <150>;       // idle GATE: don't raise within 150ms of a keypress
+ *             require-prior-idle-ms = <150>;       // idle GATE
  *             // excluded-positions = < ... >;     // derive from keymap (see 06-...md)
  *         };
  *     };

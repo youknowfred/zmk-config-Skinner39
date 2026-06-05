@@ -4,9 +4,9 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: badjeff
       url-base: https://github.com/badjeff
-    # --- T1-A: pointer acceleration module (STAGED — uncomment remote + project below) ---
-    # - name: oleksandrmaslov
-    #   url-base: https://github.com/oleksandrmaslov
+    # T1-A: pointer acceleration module
+    - name: oleksandrmaslov
+      url-base: https://github.com/oleksandrmaslov
   projects:
     - name: zmk
       remote: zmk
@@ -15,11 +15,10 @@ manifest:
     - name: zmk-pmw3610-driver
       remote: badjeff
       revision: 44b4a76b74d293a93cec4ccb7e04cb8d29c10f93  # main / "zmk-0.4": pixart,pmw3610-alt + CONFIG_PMW3610_ALT_*
-    # --- T1-A: pointer acceleration (STAGED). Uncomment with the remote above + the
-    #     dts include/block in skinner39_left_nrf52840_zmk.dts. Pinned (pre-1.0, Cirque-tested). ---
-    # - name: zmk-pointing-acceleration
-    #   remote: oleksandrmaslov
-    #   revision: 0da8f97f8f2abb18fcc9d488b25357511922cf32  # main @ 2026-06; re-verify before relying on it
+    # T1-A: pointer acceleration (pinned; pre-1.0, Cirque-tested)
+    - name: zmk-pointing-acceleration
+      remote: oleksandrmaslov
+      revision: 0da8f97f8f2abb18fcc9d488b25357511922cf32  # main @ 2026-06
   self:
     path: config
 # Dropped vs fw15 (now built into ZMK core, were breaking the build):
