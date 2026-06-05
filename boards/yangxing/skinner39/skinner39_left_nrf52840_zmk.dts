@@ -114,9 +114,9 @@ nice_view_spi: &spi2 {
 	input-type = <INPUT_EV_REL>;
 	track-remainders;
 	min-factor = <800>;           /* 0.8x at slow speed -> precision "just happens" */
-	max-factor = <1800>;          /* 1.8x at fast speed (conservative; raise toward 2500 after soak) */
-	speed-threshold = <1200>;     /* counts/s where factor = 1.0 (SEED — re-tune from on-device cps) */
-	speed-max = <6000>;           /* counts/s where factor reaches max */
+	max-factor = <2800>;          /* 2.8x at fast speed -> reach (TUNED: variant R2, chosen by feel 2026-06-05) */
+	speed-threshold = <1050>;     /* counts/s where factor = 1.0 */
+	speed-max = <5500>;           /* counts/s where factor reaches max */
 	acceleration-exponent = <2>;  /* quadratic */
 };
 
