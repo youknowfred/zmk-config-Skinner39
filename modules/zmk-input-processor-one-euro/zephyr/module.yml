@@ -1,6 +1,0 @@
-name: zmk-input-processor-one-euro
-build:
-  cmake: .
-  kconfig: Kconfig
-  settings:
-    dts_root: .

@@ -7,6 +7,9 @@ manifest:
     # T1-A: pointer acceleration module
     - name: oleksandrmaslov
       url-base: https://github.com/oleksandrmaslov
+    # T1-E: 1-Euro smoothing module (your repo)
+    - name: youknowfred
+      url-base: https://github.com/youknowfred
   projects:
     - name: zmk
       remote: zmk
@@ -19,6 +22,10 @@ manifest:
     - name: zmk-pointing-acceleration
       remote: oleksandrmaslov
       revision: 0da8f97f8f2abb18fcc9d488b25357511922cf32  # main @ 2026-06
+    # T1-E: 1-Euro smoothing (custom; DRAFT — soak before trusting)
+    - name: zmk-input-processor-one-euro
+      remote: youknowfred
+      revision: 6f9c5432bb7a8cc55169ee945a6fca8824569670
   self:
     path: config
 # Dropped vs fw15 (now built into ZMK core, were breaking the build):

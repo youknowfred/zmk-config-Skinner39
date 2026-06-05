@@ -84,10 +84,10 @@ nice_view_spi: &spi2 {
 	 * default. Enable per keysmith-design/06-trackball-T0-T1-implementation.md.
 	 */
 
-	/* Base chain (every layer): acceleration (T1-A) + motion->mouse-layer (T1-C).
-	 * Snipe/scroll child overrides REPLACE this chain on their layers (no double-attenuation).
-	 * zip_temp_mouse raises mouse_layer(4) on motion; node defined below + keymap click cluster. */
-	input-processors = <&pointer_accel &zip_temp_mouse 4 300>;
+	/* Base chain (every layer): 1-Euro smoothing (T1-E) -> acceleration (T1-A) -> motion->mouse-layer (T1-C).
+	 * Order: smooth the deltas FIRST, then shape (accel), then the temp-layer trigger. Snipe/scroll
+	 * child overrides REPLACE this chain on their layers (no double-attenuation). */
+	input-processors = <&one_euro &pointer_accel &zip_temp_mouse 4 300>;
 
 	/* SNIPE — layer 6: 1/3 precision. Stock zip_xy_scaler already tracks remainders. */
 	snipe {
@@ -118,6 +118,21 @@ nice_view_spi: &spi2 {
 	speed-threshold = <1050>;     /* counts/s where factor = 1.0 (R2's gentler onset) */
 	speed-max = <5500>;           /* counts/s where factor reaches max */
 	acceleration-exponent = <2>;  /* quadratic */
+};
+
+/* T1-E: 1-Euro adaptive smoothing (custom module, DRAFT). Smooths the delta stream —
+ * jitter kill at rest/slow speed, low lag when fast. Placed FIRST in the base chain.
+ * Tune: min-cutoff (lower = smoother but more lag), beta (higher = less lag when fast).
+ * Velocity estimate rides BLE burst cadence -> judge on USB. Needs CONFIG_FPU + 4096 stack. */
+/ {
+	one_euro: one_euro {
+		compatible = "zmk,input-processor-one-euro";
+		#input-processor-cells = <0>;
+		min-cutoff-milli = <1000>;   /* 1.0 Hz */
+		beta-milli = <7>;            /* sweep {3,7,15} */
+		d-cutoff-milli = <1000>;
+		/* ema-only; ema-alpha-milli = <400>;   // fallback: fixed EMA (simpler, more lag) */
+	};
 };
 
 /* T1-C: motion-triggered mouse layer. zip_temp_mouse (in the base chain above) raises
