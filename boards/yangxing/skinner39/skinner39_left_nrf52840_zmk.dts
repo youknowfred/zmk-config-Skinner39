@@ -128,9 +128,9 @@ nice_view_spi: &spi2 {
 	one_euro: one_euro {
 		compatible = "zmk,input-processor-one-euro";
 		#input-processor-cells = <0>;
-		min-cutoff-milli = <4000>;   /* 1.0 Hz */
-		beta-milli = <16>;            /* sweep {3,7,15} */
-		d-cutoff-milli = <2500>;
+		min-cutoff-milli = <4000>;   /* 4.0 Hz floor cutoff (TUNED: between E1 and E2, toward E2) */
+		beta-milli = <16>;           /* speed coeff (higher = sheds onset lag faster on fast moves) */
+		d-cutoff-milli = <2500>;     /* 2.5 Hz derivative cutoff */
 		/* ema-only; ema-alpha-milli = <400>;   // fallback: fixed EMA (simpler, more lag) */
 	};
 };
