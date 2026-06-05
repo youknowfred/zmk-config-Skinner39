@@ -5,14 +5,14 @@
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 
-// Override the PMW listener to use layer 2 for scroll mode instead of layer 5
-&pmw_listener {
-    scroller {
-        layers = <2>;  // Changed from 5 to 2
-        // Invert Y axis and reduce scroll sensitivity (1/4 speed)
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll_mapper>;
-    };
-};
+/*
+ * Trackball input-processors are defined ONCE, in the board .dts
+ *   (boards/yangxing/skinner39/skinner39_left_nrf52840_zmk.dts -> &pmw_listener).
+ * The old per-keymap override that used to sit here silently bound scroll onto
+ * macro_layer (index 2) at 1/4 speed with Y inverted, shadowing the .dts. Removed.
+ * Reach: hold a left thumb (&lt 7) = scroll (layer 7);  &mo 6 (macro_layer) = snipe (layer 6).
+ * See keysmith-design/06-trackball-T0-T1-implementation.md.
+ */
 
 / {
     behaviors {
@@ -193,7 +193,7 @@
   &kp Q          &kp W      &kp E        &kp R     &kp T                                                  &kp Y               &kp U  &kp I      &kp O    &kp P
   &hml LSHIFT A  &kp S      &kp D        &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
   &my_lt 2 Z     &kp X      &kp C        &kp V     &kp B                                                  &kp N               &kp M  &kp COMMA  &kp DOT  &my_lt 2 FSLH
-  &macro10       &kp LCTRL  &mkp MB2  &mkp MB1  &my_lt 1 SPACE  &mt LEFT_GUI TAB  &mt RIGHT_GUI ENTER  &my_lt 1 BACKSPACE                             &mkp MB1
+  &macro10       &kp LCTRL  &mkp MB2  &mkp MB1  &my_lt 1 SPACE  &lt 7 TAB  &mt RIGHT_GUI ENTER  &my_lt 1 BACKSPACE                             &mkp MB1
             >;
         };
 
@@ -242,6 +242,20 @@
             >;
         };
 
+        // index 6 — carries the SNIPE input-processor (&pmw_listener.snipe, layers=<6>).
+        // Reached via &mo 6 on macro_layer's center thumbs. Renamed from "scroll_layer"
+        // (which was misleading: layer 6 has always been snipe, not scroll).
+        snipe_layer {
+            bindings = <
+  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans
+            >;
+        };
+
+        // index 7 — carries the SCROLL input-processor (&pmw_listener.scroller, layers=<7>).
+        // Reached via the dedicated left-thumb &lt 7 (default_layer position 35). New layer.
         scroll_layer {
             bindings = <
   &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans

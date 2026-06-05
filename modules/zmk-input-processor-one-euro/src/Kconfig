@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT
+DT_COMPAT_ZMK_INPUT_PROCESSOR_ONE_EURO := zmk,input-processor-one-euro
+
+config ZMK_INPUT_PROCESSOR_ONE_EURO
+    bool "Enable 1-Euro pointer smoothing input processor (DRAFT)"
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_INPUT_PROCESSOR_ONE_EURO))
+    depends on ZMK_POINTING
+    depends on INPUT
+    help
+      DRAFT (T1-E). Adaptive low-pass (1-Euro) smoothing of relative pointer deltas.
+      This draft uses floating point — also enable CONFIG_FPU=y. Bump
+      CONFIG_MAIN_STACK_SIZE=4096 before enabling, and soak before trusting it.

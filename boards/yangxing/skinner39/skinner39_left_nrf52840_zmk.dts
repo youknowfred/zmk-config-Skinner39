@@ -1,6 +1,8 @@
 #include "skinner39.dtsi"
 #include <dt-bindings/led/led.h>
 #include <input/processors.dtsi>
+#include <dt-bindings/zmk/input_transform.h>          /* INPUT_TRANSFORM_Y_INVERT (scroll Y-invert) */
+// #include <behaviors/input_gestures_accel.dtsi>     /* T1-A acceleration — uncomment to enable (see 06-...md) */
 
 
 &pinctrl {
@@ -72,16 +74,69 @@ nice_view_spi: &spi2 {
 &pmw_listener {
 	status = "okay";
 
-	// when layer 2 is active, the trackball will act as a mouse wheel
-	scroller {
-		layers = <5>;
-		input-processors = <&zip_xy_to_scroll_mapper>;
-	};
-	// default when layer 5 is active, the trackball will move more slowly
-		snipe {
-		layers =<6>;
+	/*
+	 * SINGLE SOURCE OF TRUTH for trackball input-processors (T0).
+	 * Topology: PMW3610 is on the RIGHT half -> BLE split -> these processors run
+	 * HERE on the LEFT/central half. Layer indices (0-based):
+	 *     6 = snipe  (reached via &mo 6 on macro_layer)
+	 *     7 = scroll (reached via &lt 7 on the left thumb, default_layer pos 35)
+	 * T1-A (acceleration) and T1-C (motion->mouse-layer) are STAGED below, off by
+	 * default. Enable per keysmith-design/06-trackball-T0-T1-implementation.md.
+	 */
+
+	/* --- T1-A base chain (STAGED): uncomment to apply acceleration on every layer.
+	 *     Snipe/scroll overrides REPLACE the base chain, so accel never stacks with
+	 *     the 1/3 snipe scaler (no double-attenuation).  Requires: west.yml accel
+	 *     project + the include at the top of this file + the &pointer_accel block.
+	 * input-processors = <&pointer_accel>;
+	 */
+
+	/* SNIPE — layer 6: 1/3 precision. Stock zip_xy_scaler already tracks remainders. */
+	snipe {
+		layers = <6>;
 		input-processors = <&zip_xy_scaler 1 3>;
 	};
-	// temp layer when trackball is used, 2 is layer index, and 2000 is the time which the layer will deactivate when no input events is emitted
-	      //  input-processors = <&zip_temp_layer 4 2000>;
+
+	/* SCROLL — layer 7: keep Y inverted (preference) -> map X/Y to wheel -> slow to 1/3.
+	 * Order matters: transform (invert) BEFORE the scroll mapper; scale the WHEEL last.
+	 * Tune the final divisor (1 3) for scroll speed; pairs with SMOOTH_SCROLLING. */
+	scroller {
+		layers = <7>;
+		input-processors =
+			<&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>,
+			<&zip_xy_to_scroll_mapper>,
+			<&zip_scroll_scaler 1 3>;
+	};
 };
+
+/* ====================== STAGED FIRMWARE (off by default) ======================
+ * Uncomment these together with the matching west.yml / include / base-chain
+ * lines above, ONE STAGE PER FLASH. Full steps + tuning + A/B + rollback:
+ *   keysmith-design/06-trackball-T0-T1-implementation.md
+ *
+ * --- T1-A: acceleration parameters (velocity curve = auto-snipe + reach) ---
+ * &pointer_accel {
+ *     input-type = <INPUT_EV_REL>;
+ *     track-remainders;
+ *     min-factor = <800>;           // 0.8x at slow speed  -> precision "just happens"
+ *     max-factor = <1800>;          // 1.8x at fast speed   (conservative; raise after soak)
+ *     speed-threshold = <1200>;     // counts/s where factor = 1.0  (SEED — tune on a frozen macOS curve)
+ *     speed-max = <6000>;           // counts/s where factor reaches max
+ *     acceleration-exponent = <2>;  // quadratic
+ * };
+ *
+ * --- T1-C: motion-triggered mouse layer (clicks under the resting LEFT hand) ---
+ *   ALSO requires the mouse_layer click re-home in the keymap (see 06-...md), or
+ *   the auto-raised clicks land on the arrow keys. Base chain becomes:
+ *       input-processors = <&pointer_accel &zip_temp_mouse 4 300>;   // accel first, temp-layer last
+ * / {
+ *     input_processors {
+ *         zip_temp_mouse: zip_temp_mouse {
+ *             compatible = "zmk,input-processor-temp-layer";
+ *             #input-processor-cells = <2>;        // <layer> <deactivate-timeout-ms>
+ *             require-prior-idle-ms = <150>;       // idle GATE: don't raise within 150ms of a keypress
+ *             // excluded-positions = < ... >;     // derive from keymap (see 06-...md)
+ *         };
+ *     };
+ * };
+ * ============================================================================ */
