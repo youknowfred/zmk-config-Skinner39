@@ -185,6 +185,17 @@
         };
     };
 
+    combos {
+        compatible = "zmk,combos";
+        combo_system {
+            timeout-ms = <50>;
+            require-prior-idle-ms = <150>;
+            key-positions = <0 9>;   // Q + P, the two top-outer corners
+            bindings = <&sl 5>;      // sticky -> next key lands on system_layer(5)
+            layers = <0>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -209,7 +220,7 @@
         macro_layer {
             bindings = <
   &trans    &kp ESC         &trans            &trans      &trans                          &code_block  &zoom_out   &zoom_in     &trans  &trans
-  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &kp UNDER  &word_left  &word_right  &trans  &trans
+  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &kp UNDER  &word_left  &word_right  &kp QMARK  &trans
   &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
   &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
             >;

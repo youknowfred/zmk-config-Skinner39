@@ -1,5 +1,6 @@
 #include "skinner39.dtsi"
 #include <dt-bindings/led/led.h>
+#include <common/nordic/nrf52840_uf2_boot_mode.dtsi>  /* &bootloader: write Adafruit UF2 DFU magic so the bootloader STAYS in DFU */
 
 &pinctrl {
     spi2_default: spi2_default {
