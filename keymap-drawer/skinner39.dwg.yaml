@@ -99,7 +99,7 @@ layers:
   - _
   - '&word_left'
   - '&word_right'
-  - {t: ▽, type: trans}
+  - '?'
   - {t: ▽, type: trans}
   - {type: held}
   - '|'
@@ -201,7 +201,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   system:
-  - BT 0
+  - {t: BT 0, type: held}
   - BT 1
   - BT 2
   - {t: ▽, type: trans}
@@ -210,7 +210,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -320,3 +320,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+combos:
+- p: [0, 9]
+  k: {t: system, h: sticky}
+  l: [default]
