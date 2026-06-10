@@ -122,6 +122,10 @@ Philosophy: **every recovery action retries until it succeeds, and every
 
 - [x] Acute outage root-caused and fixed live (2026-06-10, no flash needed)
 - [x] All five wedge classes patched on the fork (`d62e565c`)
-- [x] CI green on the bumped pin
-- [ ] Both halves flashed with the v2-cure build
-- [ ] 1-week soak with deliberate drop/reconnect stress
+- [x] CI green on the bumped pin (main run 27275269447, commit `26f6d06`)
+- [x] Both halves flashed with the v2-cure build (2026-06-10 ~05:20)
+- [x] Post-flash verification: LEFT/RIGHT/trackball on USB ✓, BLE typing cable-out
+      (the 04:00 failure state) ✓, **deliberate RIGHT power-cycle drop → rejoined
+      hands-off** ✓ — settings (bonds, active profile) survived the reflash as designed
+- [ ] 1-week soak with deliberate drop/reconnect stress (started 2026-06-10; if a
+      drop ever fails to self-heal, capture logs per §3.3 before power-cycling)
