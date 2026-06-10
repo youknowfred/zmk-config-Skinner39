@@ -17,4 +17,15 @@ include:
   #  settings_reset shield the PMW3610 trackball driver fails to instantiate.)
   - board: skinner39_left/nrf52840/zmk
     shield: settings_reset
+  # --- RIGHT bond-clear firmware (safety net — peripheral half) ---
+  # The RIGHT-half counterpart of settings_reset, done the only way that works
+  # here: the NORMAL right shield + CONFIG_ZMK_BLE_CLEAR_BONDS_ON_START=y
+  # (settings_reset would kill the PMW3610 — see the note above). Flash once,
+  # boot to clear the stale split bond, then re-flash the normal right
+  # firmware. Drives the Repair wizard's asymmetric bond-reset playbook
+  # (was the one-off `clear-bonds-right` branch; folded into main 2026-06-09).
+  - board: skinner39_right/nrf52840/zmk
+    shield: nice_view
+    cmake-args: -DCONFIG_ZMK_BLE_CLEAR_BONDS_ON_START=y
+    artifact-name: skinner39_right_CLEAR_BONDS
 
