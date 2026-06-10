@@ -14,14 +14,17 @@ include:
   # --- LEFT diagnostic build (USB logging) — 2026-06-11 soak instrumentation ---
   # Identical firmware to the main LEFT build EXCEPT: snippet studio-rpc-usb-uart
   # is replaced by zmk-usb-logging (the CDC port becomes a log console; ZMK Studio
-  # unavailable while flashed) + ZMK log level DBG. Purpose: capture the central's
-  # view of the day-1 soak failure (split drop that ALSO kills the host link and
-  # needs a LEFT power-cycle — see docs/2026-06-10-split-ble-root-cause-and-fix.md).
-  # Capture rig: ~/Documents/skinner39/split-log-capture.sh.
+  # unavailable while flashed) at log level INF — the "flight recorder". The
+  # connection-lifecycle lines are promoted to INF in the fork (52eeae6c) so this
+  # captures the reconnect story at near-zero volume. ⚠ Do NOT raise to DBG: DBG
+  # saturates the legacy USB stack's CDC under trackball motion and the device
+  # falls off the bus mid-write within seconds (observed 2026-06-11, same
+  # fragility class as the raw-HID P0-6 wedge; docs/...root-cause-and-fix.md §5).
+  # Capture rig: tools/split-log-capture.sh (installed at ~/Documents/skinner39/).
   - board: skinner39_left/nrf52840/zmk
     shield: keysmith_glance
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y
+    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_INF=y
     artifact-name: skinner39_left_USB_LOGGING
   # --- Settings-reset firmware (safety net — central/left half) ---
   # Drag the *settings_reset* UF2 onto the 'keyball' bootloader drive to wipe the

@@ -162,3 +162,16 @@ What the log should reveal at the drop timestamp: whether `disconnected` fired
 for the split conn, whether scanning restarted (and the eir_found/create_conn
 cycle), what happened to the host-link conn, and whether logging itself goes
 silent (= firmware-wide stall).
+
+**Instrumentation incident (2026-06-11, same day):** the first logging build ran
+ZMK at DBG and the trackball-motion log spam (thousands of lines/s) saturated
+the legacy USB stack's CDC — the device fell off the USB bus mid-log-line at
+uptime 15 s, unrecoverable without power-cycle, and with ZMK still believing
+USB was the ready output, all typing went into the void. This is hard evidence
+for the **P0-6 fragility class** (raw-HID wedged this same stack in 2026-06-09's
+bisect): the legacy Zephyr USB device stack on this board dies under sustained
+multi-endpoint load. Bonus diagnosis: the boot log captured cure-v2 working —
+full split discovery + subscription in 1.05 s, host link at 15 ms interval.
+The replacement "flight recorder" build (fork `52eeae6c`) logs only
+connection-lifecycle events at INF — the idle-CDC profile the Studio snippet
+has proven stable for days. **Never run this board's USB logging at DBG.**
