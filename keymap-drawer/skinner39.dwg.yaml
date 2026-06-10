@@ -204,17 +204,17 @@ layers:
   - {t: BT 0, type: held}
   - BT 1
   - BT 2
-  - {t: ▽, type: trans}
+  - BT 3
   - boot
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {type: held}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - {t: BT, h: '4'}
+  - OUT USB
+  - OUT BLE
+  - OUT TOG
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

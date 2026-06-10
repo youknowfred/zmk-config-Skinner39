@@ -86,6 +86,13 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
             strcat(output_text, LV_SYMBOL_SETTINGS);
         }
         break;
+    default:
+        // 2026-06-10 incident: ZMK_TRANSPORT_NONE (nothing ready — no USB cable
+        // and the active BLE profile not connected) rendered an EMPTY icon here,
+        // which read as a broken display instead of "output: none". Make every
+        // endpoint state visible.
+        strcat(output_text, LV_SYMBOL_MINUS);
+        break;
     }
 
     canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);

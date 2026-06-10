@@ -99,3 +99,14 @@ https://www.baj.r.jp/battery/safety/safety16.html
 
 5．リセット完了となります。
 
+
+---
+
+## Maintenance notes (this fork)
+
+- **2026-06-10 — split/BLE root cause + durable fix:** the chronic "split dies
+  until power-cycle" and the zombie-connection outage are root-caused and fixed.
+  Full writeup, wedge taxonomy, field guide, and soak protocol:
+  [docs/2026-06-10-split-ble-root-cause-and-fix.md](docs/2026-06-10-split-ble-root-cause-and-fix.md).
+- Recovery/bond-reset playbook and firmware-image notes live in the comments of
+  [build.yaml](build.yaml).
