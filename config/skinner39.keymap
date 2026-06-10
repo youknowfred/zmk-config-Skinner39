@@ -187,22 +187,15 @@
 
     combos {
         compatible = "zmk,combos";
+        // The H1 recovery road to system_layer(5). Supersedes P1-7's tri-layer
+        // (if-layers 1+2 -> 5), which was confirmed INERT on-device: the my_lt
+        // activators exist only on the base layer, so 1 and 2 can't be co-held.
         combo_system {
             timeout-ms = <50>;
             require-prior-idle-ms = <150>;
             key-positions = <0 9>;   // Q + P, the two top-outer corners
             bindings = <&sl 5>;      // sticky -> next key lands on system_layer(5)
             layers = <0>;
-        };
-    };
-
-    // P1-7: second road to system_layer(5) — hold both thumb layers together.
-    // Composes with combo_system above (sticky Q+P); indices 1/2/5 unchanged.
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_system {
-            if-layers = <1 2>;
-            then-layer = <5>;
         };
     };
 
