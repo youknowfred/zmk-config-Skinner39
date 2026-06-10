@@ -126,7 +126,66 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
     rotate_canvas(canvas);
 }
 
+#if IS_ENABLED(CONFIG_RAW_HID)
+// Keysmith Glance host panel (doc 03 §5.4, adapted to the 68×68 middle cell).
+// Shown INSTEAD of the profile circles while host frames are live (≤65 s old);
+// falls back to the circles when the host goes quiet. unscii_8 fits 8 chars
+// across the 68 px cell, so app is truncated to 8 and the ≤14-char tip wraps
+// onto two lines.
+static void draw_middle_host(lv_obj_t *widget, const struct status_state *state) {
+    lv_obj_t *canvas = lv_obj_get_child(widget, 1);
+
+    lv_draw_rect_dsc_t rect_black_dsc;
+    init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
+    lv_draw_rect_dsc_t rect_white_dsc;
+    init_rect_dsc(&rect_white_dsc, LVGL_FOREGROUND);
+    lv_draw_label_dsc_t big_dsc;
+    init_label_dsc(&big_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
+    lv_draw_label_dsc_t small_dsc;
+    init_label_dsc(&small_dsc, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_CENTER);
+
+    // Fill background
+    lv_canvas_fill_bg(canvas, LVGL_BACKGROUND, LV_OPA_COVER);
+
+    // Comfort 0..100 — number first, then a bar
+    char comfort_text[4];
+    snprintf(comfort_text, sizeof(comfort_text), "%d", state->glance.comfort);
+    canvas_draw_text(canvas, 0, 2, 68, &big_dsc, comfort_text);
+
+    canvas_draw_rect(canvas, 1, 26, 66, 8, &rect_white_dsc);
+    canvas_draw_rect(canvas, 2, 27, 64, 6, &rect_black_dsc);
+    canvas_draw_rect(canvas, 2, 27, (state->glance.comfort * 64) / 100, 6, &rect_white_dsc);
+
+    // Foreground app (host suppresses it under Secure Input; len 0 clears)
+    if (state->glance.app[0] != '\0') {
+        char app_line[9];
+        snprintf(app_line, sizeof(app_line), "%.8s", state->glance.app);
+        canvas_draw_text(canvas, 0, 38, 68, &small_dsc, app_line);
+    }
+
+    // Tip (≤14 chars), wrapped at 7 onto two lines
+    if (state->glance.tip[0] != '\0') {
+        char line[8];
+        snprintf(line, sizeof(line), "%.7s", state->glance.tip);
+        canvas_draw_text(canvas, 0, 50, 68, &small_dsc, line);
+        if (strlen(state->glance.tip) > 7) {
+            snprintf(line, sizeof(line), "%.7s", state->glance.tip + 7);
+            canvas_draw_text(canvas, 0, 59, 68, &small_dsc, line);
+        }
+    }
+
+    // Rotate canvas
+    rotate_canvas(canvas);
+}
+#endif // IS_ENABLED(CONFIG_RAW_HID)
+
 static void draw_middle(lv_obj_t *widget, const struct status_state *state) {
+#if IS_ENABLED(CONFIG_RAW_HID)
+    if (state->glance.live) {
+        draw_middle_host(widget, state);
+        return;
+    }
+#endif
     lv_obj_t *canvas = lv_obj_get_child(widget, 1);
 
     lv_draw_rect_dsc_t rect_black_dsc;
@@ -370,6 +429,30 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_hid_indicators, struct hid_indicators_state,
                             hid_indicators_update_cb, hid_indicators_get_state)
 ZMK_SUBSCRIPTION(widget_hid_indicators, zmk_hid_indicators_changed);
 
+#if IS_ENABLED(CONFIG_RAW_HID)
+
+static void set_host_glance(struct zmk_widget_status *widget, struct host_glance_view state) {
+    widget->state.glance = state;
+    draw_middle(widget->obj, &widget->state);
+}
+
+static void host_glance_update_cb(struct host_glance_view state) {
+    struct zmk_widget_status *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_host_glance(widget, state); }
+}
+
+static struct host_glance_view host_glance_get_state(const zmk_event_t *eh) {
+    ARG_UNUSED(eh);
+    // The store owns the lock; this returns a consistent copy (doc 03 §5.3).
+    return keysmith_host_glance_snapshot();
+}
+
+ZMK_DISPLAY_WIDGET_LISTENER(widget_host_glance, struct host_glance_view, host_glance_update_cb,
+                            host_glance_get_state)
+ZMK_SUBSCRIPTION(widget_host_glance, keysmith_glance_state_changed);
+
+#endif // IS_ENABLED(CONFIG_RAW_HID)
+
 int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget->obj = lv_obj_create(parent);
     lv_obj_set_size(widget->obj, 160, 68);
@@ -389,6 +472,9 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget_layer_status_init();
     widget_wpm_status_init();
     widget_hid_indicators_init();
+#if IS_ENABLED(CONFIG_RAW_HID)
+    widget_host_glance_init();
+#endif
 
     return 0;
 }

@@ -3,6 +3,10 @@ include:
   - board: skinner39_left/nrf52840/zmk
     shield: keysmith_glance
     snippet: studio-rpc-usb-uart
+    # P0-6: raw-HID host channel (LEFT/central only). HID_1 = the second legacy
+    # HID instance the zmk-raw-hid module binds; the keyboard stays on HID_0.
+    # USB logging stays OFF here (Studio CDC conflict, zmk #3031).
+    cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_USB_HID_DEVICE_COUNT=2
   - board: skinner39_right/nrf52840/zmk
     shield: nice_view
   # --- Settings-reset firmware (safety net — central/left half) ---
