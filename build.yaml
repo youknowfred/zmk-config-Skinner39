@@ -15,16 +15,18 @@ include:
   # Identical firmware to the main LEFT build EXCEPT: snippet studio-rpc-usb-uart
   # is replaced by zmk-usb-logging (the CDC port becomes a log console; ZMK Studio
   # unavailable while flashed) at log level INF — the "flight recorder". The
-  # connection-lifecycle lines are promoted to INF in the fork (52eeae6c) so this
-  # captures the reconnect story at near-zero volume. ⚠ Do NOT raise to DBG: DBG
-  # saturates the legacy USB stack's CDC under trackball motion and the device
-  # falls off the bus mid-write within seconds (observed 2026-06-11, same
-  # fragility class as the raw-HID P0-6 wedge; docs/...root-cause-and-fix.md §5).
+  # connection-lifecycle lines are promoted to INF in the fork so this captures
+  # the reconnect story at near-zero volume. The INF level is pinned INSIDE the
+  # fork's snippet conf (a96127a7) — per-entry cmake-args silently failed to set
+  # it (a DBG artifact shipped; verify artifacts with `strings`, see docs §5).
+  # ⚠ Do NOT run this board's USB logging at DBG: DBG saturates the legacy USB
+  # stack's CDC under trackball motion, the device falls off the bus mid-write,
+  # and the macOS port can LATCH disabled (power, no data) until cleared — same
+  # fragility class as the raw-HID P0-6 wedge.
   # Capture rig: tools/split-log-capture.sh (installed at ~/Documents/skinner39/).
   - board: skinner39_left/nrf52840/zmk
     shield: keysmith_glance
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_INF=y
     artifact-name: skinner39_left_USB_LOGGING
   # --- Settings-reset firmware (safety net — central/left half) ---
   # Drag the *settings_reset* UF2 onto the 'keyball' bootloader drive to wipe the
