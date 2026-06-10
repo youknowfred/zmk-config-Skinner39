@@ -129,3 +129,36 @@ Philosophy: **every recovery action retries until it succeeds, and every
       hands-off** ✓ — settings (bonds, active profile) survived the reflash as designed
 - [ ] 1-week soak with deliberate drop/reconnect stress (started 2026-06-10; if a
       drop ever fails to self-heal, capture logs per §3.3 before power-cycling)
+
+## 5. Day-1 soak finding (2026-06-11) — open investigation
+
+Cure v2 measurably improved things, but a **new, more severe failure class**
+showed up a few times on day 1:
+
+- RIGHT drops; power-cycling RIGHT does **not** fix it (so the peripheral was
+  advertising — central-side fault confirmed);
+- **the LEFT (on battery) stops typing too** — i.e. the central's *host* link is
+  down simultaneously with the split link;
+- only a LEFT power-cycle recovers.
+
+Both of the central's BLE roles dying together is not the single-shot-wedge
+family of §2 — candidate mechanisms (radio-scheduling starvation during
+aggressive reconnect-scanning, controller-level lockup, workqueue stall, battery
+brownout under TX load) need **evidence, not guesses**. Per §3.3 discipline, the
+diagnostic instrumentation is now standing:
+
+- `skinner39_left_USB_LOGGING` build artifact (in `build.yaml`): cure-v2 LEFT
+  firmware with `zmk-usb-logging` + `ZMK_LOG_LEVEL_DBG` (ZMK Studio unavailable
+  while flashed — the CDC port is the log console).
+- [tools/split-log-capture.sh](../tools/split-log-capture.sh): continuous
+  timestamped capture on the Mac, one file per connect-session, survives resets.
+- Protocol: LEFT stays on USB (it keeps typing via USB even mid-failure). On the
+  next drop: note wall-clock time, glance at the OLED (frozen vs still updating —
+  distinguishes firmware stall from BLE-stack death), check whether macOS still
+  lists SKINNER39 as connected, then power-cycle as needed — the log keeps
+  everything.
+
+What the log should reveal at the drop timestamp: whether `disconnected` fired
+for the split conn, whether scanning restarted (and the eir_found/create_conn
+cycle), what happened to the host-link conn, and whether logging itself goes
+silent (= firmware-wide stall).
