@@ -16,7 +16,7 @@ manifest:
   projects:
     - name: zmk
       remote: youknowfred
-      revision: 9979a5b43e86a848dc9d06efa3464ea85300546a  # SPLIT-RECONNECT CURE v2 + flight-recorder INF promotions + snippet pins BOTH the INF choice and the ZMK_LOG_LEVEL int (something user-assigns the int to 4=DBG past the choice; assigner unidentified, snippet merges last so it wins). v2 = zmkfirmware@26246da + scan-retry (e96a20c) + hardening of EVERY single-shot reconnect path (d62e565c: central slot-leak/mute-link/subscription watchdog; peripheral adv self-retry + disconnect backstop). Root cause + audit: docs/2026-06-10-split-ble-root-cause-and-fix.md. REVERT = remote: zmk / revision: 26246da1b69733b224a33d82b33750541cd5933a
+      revision: 02224d4c32c04884305024823f3d5751df7ece11  # SPLIT-RECONNECT CURE v2 + flight-recorder INF promotions + snippet sets ZMK_LOGGING_MINIMAL=y + ZMK_LOG_LEVEL_INF=y (ZMK app/Kconfig:553 forces default DBG unless MINIMAL — the saga of 2026-06-11). REVERT = remote: zmk / revision: 26246da1b69733b224a33d82b33750541cd5933a
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: badjeff
