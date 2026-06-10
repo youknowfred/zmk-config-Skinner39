@@ -8,6 +8,10 @@
 #include <lvgl.h>
 #include <zmk/endpoints.h>
 
+#if IS_ENABLED(CONFIG_RAW_HID)
+#include "host_glance.h"
+#endif
+
 #define NICEVIEW_PROFILE_COUNT 5
 
 #define CANVAS_SIZE 68
@@ -35,6 +39,9 @@ struct status_state {
     const char *layer_label;
     uint8_t wpm[10];
     uint8_t hid_indicators;
+#if IS_ENABLED(CONFIG_RAW_HID)
+    struct host_glance_view glance;
+#endif
 #else
     bool connected;
 #endif
