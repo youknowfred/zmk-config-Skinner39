@@ -172,6 +172,20 @@ for the **P0-6 fragility class** (raw-HID wedged this same stack in 2026-06-09's
 bisect): the legacy Zephyr USB device stack on this board dies under sustained
 multi-endpoint load. Bonus diagnosis: the boot log captured cure-v2 working —
 full split discovery + subscription in 1.05 s, host link at 15 ms interval.
-The replacement "flight recorder" build (fork `52eeae6c`) logs only
-connection-lifecycle events at INF — the idle-CDC profile the Studio snippet
-has proven stable for days. **Never run this board's USB logging at DBG.**
+**How the instrument finally shipped (the rest of 2026-06-11's saga):** an
+INF-level build was tried first and appeared CDC-silent — but the verdict was
+contaminated: **macOS half-latches a USB port after a device falls off the bus
+mid-write** (enumeration + HID keep working, the CDC IN path stays dead) and
+every "silent" test had run on a latched port. Unplug/replug clears the latch;
+a full latch (no enumeration, power only) also occurred and cleared the same
+way. Final design — the proven-streaming DBG pipeline, defused at the source:
+fork `13b4175c` **deletes the 13 per-event hot-path LOG_DBG lines** (trackball
+relay chain, per-report endpoint/hid/usb chatter), keeping all event-driven
+diagnostics; plus a 15 s first-flush delay (`eb977325`) so capture rigs win the
+port-open race. Validated live: hard trackball stress with the bus surviving,
+and a deliberate RIGHT power-cycle captured end-to-end —
+`Disconnected (reason 8) → slot release → scan restart (0.3 ms) → Initiating →
+Connected` — **2.7 s hands-off reconnect**. Artifact rule that caught two bad
+builds today: **strings-probe every logging UF2 before flashing** (lifecycle
+strings present, deleted hot-path strings absent; de-block the UF2 first —
+strings split across 512-byte block payloads).
