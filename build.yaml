@@ -3,10 +3,12 @@ include:
   - board: skinner39_left/nrf52840/zmk
     shield: keysmith_glance
     snippet: studio-rpc-usb-uart
-    # P0-6: raw-HID host channel (LEFT/central only). HID_1 = the second legacy
-    # HID instance the zmk-raw-hid module binds; the keyboard stays on HID_0.
-    # USB logging stays OFF here (Studio CDC conflict, zmk #3031).
-    cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_USB_HID_DEVICE_COUNT=2
+    # P0-6: raw-HID DISABLED pending the on-device blocker (2026-06-09 bisect):
+    # with -DCONFIG_RAW_HID=y -DCONFIG_USB_HID_DEVICE_COUNT=2 the full build
+    # crashes at boot (widget) AND even widget-less the USB stack wedges ~60 s
+    # after enumerating, replug unrecoverable, endpoint selection poisoned.
+    # Next attempt is BLE-first (the module's hog.c GATT path, USB transport
+    # off) — see keysmith tracker §5 P0-6. Do not re-add the flags as-is.
   - board: skinner39_right/nrf52840/zmk
     shield: nice_view
   # --- Settings-reset firmware (safety net — central/left half) ---
