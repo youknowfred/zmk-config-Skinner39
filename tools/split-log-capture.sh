@@ -23,5 +23,5 @@ while true; do
         cat "$DEV" 2>/dev/null | perl -pe 'use POSIX qw(strftime); use Time::HiRes qw(time); my $t=time; print strftime("[%H:%M:%S", localtime($t)) . sprintf(".%03d] ", ($t-int($t))*1000);' >> "$F"
         echo "[capture] detached from $DEV at $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOGDIR/capture-rig.log"
     fi
-    sleep 2
+    sleep 0.25
 done
