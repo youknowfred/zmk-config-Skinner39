@@ -52,6 +52,15 @@ config KEYSMITH_GLANCE_WIDGET_STATUS
     select ZMK_WPM
     select ZMK_HID_INDICATORS
 
+config KEYSMITH_GLANCE_HOST_WIDGET
+    bool "Keysmith Glance host panel (raw-HID scalars on the middle cell)"
+    depends on RAW_HID
+    default y
+    help
+      Renders host-pushed WPM/comfort/app/tip (the P0-6/P4-6 Glance channel)
+      on the middle cell while frames are live. Split from RAW_HID so the
+      transport can build without the widget (and vice-versa for bisects).
+
 endif # !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
 
 config ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN

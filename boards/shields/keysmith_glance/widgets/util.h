@@ -8,7 +8,7 @@
 #include <lvgl.h>
 #include <zmk/endpoints.h>
 
-#if IS_ENABLED(CONFIG_RAW_HID)
+#if IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
 #include "host_glance.h"
 #endif
 
@@ -39,7 +39,7 @@ struct status_state {
     const char *layer_label;
     uint8_t wpm[10];
     uint8_t hid_indicators;
-#if IS_ENABLED(CONFIG_RAW_HID)
+#if IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
     struct host_glance_view glance;
 #endif
 #else

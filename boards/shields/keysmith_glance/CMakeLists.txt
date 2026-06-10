@@ -6,7 +6,7 @@ if(CONFIG_ZMK_DISPLAY AND CONFIG_KEYSMITH_GLANCE_WIDGET_STATUS)
 
   if(NOT CONFIG_ZMK_SPLIT OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     zephyr_library_sources(widgets/status.c)
-    if(CONFIG_RAW_HID)
+    if(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
       # Host-glance receive path (P0-6): needs the zmk-raw-hid module's events.
       zephyr_library_sources(widgets/host_glance.c)
     endif()

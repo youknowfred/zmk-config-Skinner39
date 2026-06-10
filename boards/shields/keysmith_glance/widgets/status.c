@@ -126,7 +126,7 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
     rotate_canvas(canvas);
 }
 
-#if IS_ENABLED(CONFIG_RAW_HID)
+#if IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
 // Keysmith Glance host panel (doc 03 §5.4, adapted to the 68×68 middle cell).
 // Shown INSTEAD of the profile circles while host frames are live (≤65 s old);
 // falls back to the circles when the host goes quiet. unscii_8 fits 8 chars
@@ -177,10 +177,10 @@ static void draw_middle_host(lv_obj_t *widget, const struct status_state *state)
     // Rotate canvas
     rotate_canvas(canvas);
 }
-#endif // IS_ENABLED(CONFIG_RAW_HID)
+#endif // IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
 
 static void draw_middle(lv_obj_t *widget, const struct status_state *state) {
-#if IS_ENABLED(CONFIG_RAW_HID)
+#if IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
     if (state->glance.live) {
         draw_middle_host(widget, state);
         return;
@@ -429,7 +429,7 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_hid_indicators, struct hid_indicators_state,
                             hid_indicators_update_cb, hid_indicators_get_state)
 ZMK_SUBSCRIPTION(widget_hid_indicators, zmk_hid_indicators_changed);
 
-#if IS_ENABLED(CONFIG_RAW_HID)
+#if IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
 
 static void set_host_glance(struct zmk_widget_status *widget, struct host_glance_view state) {
     widget->state.glance = state;
@@ -451,7 +451,7 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_host_glance, struct host_glance_view, host_gl
                             host_glance_get_state)
 ZMK_SUBSCRIPTION(widget_host_glance, keysmith_glance_state_changed);
 
-#endif // IS_ENABLED(CONFIG_RAW_HID)
+#endif // IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
 
 int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget->obj = lv_obj_create(parent);
@@ -472,7 +472,7 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget_layer_status_init();
     widget_wpm_status_init();
     widget_hid_indicators_init();
-#if IS_ENABLED(CONFIG_RAW_HID)
+#if IS_ENABLED(CONFIG_KEYSMITH_GLANCE_HOST_WIDGET)
     widget_host_glance_init();
 #endif
 
