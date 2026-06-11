@@ -226,7 +226,7 @@
   &trans    &kp ESC         &trans            &trans      &trans                          &code_block  &zoom_out   &zoom_in     &trans  &trans
   &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &kp UNDER  &word_left  &word_right  &kp QMARK  &trans
   &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
-  &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &trans  &trans  &trans                                   &code_block
+  &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
             >;
         };
 
@@ -265,7 +265,9 @@
         };
 
         // index 6 — carries the SNIPE input-processor (&pmw_listener.snipe, layers=<6>).
-        // Reached via &mo 6 on macro_layer's center thumbs. Renamed from "scroll_layer"
+        // Reached via &mo 6 on macro_layer's center thumbs (35/36) — the ONLY activators
+        // of this layer. The 49eb3f1 merge silently reverted them to &trans (snipe
+        // orphaned on the 2026-06-10 flash); restored. Renamed from "scroll_layer"
         // (which was misleading: layer 6 has always been snipe, not scroll).
         snipe_layer {
             bindings = <
