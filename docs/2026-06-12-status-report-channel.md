@@ -77,6 +77,15 @@ ownership question, same transport it already reads).
 ## Flash addendum (extends the [BLE-first runbook](2026-06-12-glance-ble-flash-runbook.md))
 
 Same gate as the runbook: **nothing flashes while the §5 soak trap is armed.**
+
+**Which images:** use the `tb7-status` archive
+(`~/Documents/skinner39/firmware/p0-6-ble-glance/tb7-status/`, run `27445276670`)
+for **every** step below, including the runbook-§2 widget experiment — the older
+`171cc20` archive predates Fred's keymap retirement (`7b028a4`), the input-thread
+stack bump, the battery fetch/proxy conf and pin `f140857`; flashing it would
+resurrect the retired mouse layer. The one-variable widget comparison holds within
+the new run (its `GLANCE_BLE` vs its primary differ only in the RAW_HID flags).
+
 When the trap concludes, the sequence becomes:
 
 1. Runbook §2–§3 unchanged: flash `skinner39_left_GLANCE_BLE` (widget image,
