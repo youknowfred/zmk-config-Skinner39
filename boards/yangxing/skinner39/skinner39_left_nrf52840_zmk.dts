@@ -81,14 +81,19 @@ nice_view_spi: &spi2 {
 	 * HERE on the LEFT/central half. Layer indices (0-based):
 	 *     6 = snipe  (reached via &mo 6 on macro_layer)
 	 *     7 = scroll (reached via &lt 7 on the left thumb, default_layer pos 35)
-	 * T1-A (acceleration) and T1-C (motion->mouse-layer) are STAGED below, off by
-	 * default. Enable per keysmith-design/06-trackball-T0-T1-implementation.md.
+	 * T1-A (acceleration) is LIVE in the base chain; tuned via &pointer_accel below.
+	 * Tune per keysmith-design/06-trackball-T0-T1-implementation.md.
 	 */
 
-	/* Base chain (every layer): 1-Euro smoothing (T1-E) -> acceleration (T1-A) -> motion->mouse-layer (T1-C).
-	 * Order: smooth the deltas FIRST, then shape (accel), then the temp-layer trigger. Snipe/scroll
-	 * child overrides REPLACE this chain on their layers (no double-attenuation). */
-	input-processors = <&one_euro &pointer_accel &zip_temp_mouse 4 300>;
+	/* Base chain (every layer): 1-Euro smoothing (T1-E) -> acceleration (T1-A).
+	 * Order: smooth the deltas FIRST, then shape (accel). Snipe/scroll child
+	 * overrides REPLACE this chain on their layers (no double-attenuation).
+	 * T1-C (&zip_temp_mouse 4 300, motion->mouse_layer) RETIRED 2026-06-12: any ball
+	 * jitter re-raised mouse_layer(4), turning the resting home row into mouse
+	 * buttons (D = RCLK), and its excluded-positions meant pressing those keys never
+	 * dismissed it — the "stuck on a right-click layer" complaint. Clicks live on
+	 * the thumb &mkp keys; keymap layer 4 is now a retired placeholder. */
+	input-processors = <&one_euro &pointer_accel>;
 
 	/* SNIPE — layer 6: 1/3 precision. Stock zip_xy_scaler already tracks remainders. */
 	snipe {
@@ -133,19 +138,5 @@ nice_view_spi: &spi2 {
 		beta-milli = <16>;           /* speed coeff (higher = sheds onset lag faster on fast moves) */
 		d-cutoff-milli = <2500>;     /* 2.5 Hz derivative cutoff */
 		/* ema-only; ema-alpha-milli = <400>;   // fallback: fixed EMA (simpler, more lag) */
-	};
-};
-
-/* T1-C: motion-triggered mouse layer. zip_temp_mouse (in the base chain above) raises
- * mouse_layer(4) on pointer motion, so the resting LEFT hand gets click buttons.
- *   require-prior-idle-ms = idle gate: don't raise within 150ms of a keypress (no flicker while typing).
- *   excluded-positions = the click cluster (10-14): clicking does NOT drop the layer; pressing any
- *                        OTHER key dismisses it, so typing stays normal. 2nd base-chain cell = 300ms timeout. */
-/ {
-	zip_temp_mouse: zip_temp_mouse {
-		compatible = "zmk,input-processor-temp-layer";
-		#input-processor-cells = <2>;        /* <layer> <deactivate-timeout-ms> */
-		require-prior-idle-ms = <150>;
-		excluded-positions = <10 11 12 13 14>;
 	};
 };

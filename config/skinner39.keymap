@@ -22,12 +22,15 @@
             label = "HOMEROW_MODS_LEFT";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <200>;      // Reduced from 280ms for faster shift activation
+            tapping-term-ms = <200>;      // Reduced from 280ms for faster mod activation
             quick-tap-ms = <125>;         // Reduced from 175ms
             require-prior-idle-ms = <100>; // Reduced from 150ms
             bindings = <&kp>, <&kp>;
 
-            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29 33 34>;
+            // 35-38 (TAB / ENTER / BACKSPACE / right MB1 thumbs) added 2026-06-12 for
+            // the A-hold=LGUI era: Cmd+Tab, Cmd+Enter, Cmd+Backspace, Cmd+click.
+            // (33/34 were already here, so Cmd+click-left / Cmd+Space=Spotlight work too.)
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29 33 34 35 36 37 38>;
             hold-trigger-on-release;
         };
 
@@ -165,8 +168,8 @@
             compatible = "zmk,behavior-macro";
             label = "CODE_BLOCK";
             #binding-cells = <0>;
-            wait-ms = <40>;
-            tap-ms = <40>;
+            wait-ms = <5>;   // was 40/40 -> three visibly separate backticks (~240ms);
+            tap-ms = <5>;    // 5/5 lands as one ~30ms burst, still safely paced for BLE
             bindings = <&kp GRAVE &kp GRAVE &kp GRAVE>;
         };
 
@@ -203,10 +206,18 @@
     keymap {
         compatible = "zmk,keymap";
 
+        // 2026-06-12: A-hold = LGUI (was LSHIFT — owner never used it; ' is THE shift,
+        // confirmed by owner, and is untouched). How ' shift actually covers things:
+        // fast chords (<200ms) shift LEFT-hand keys (hmr hold-trigger list), and a
+        // deliberate hold past the 200ms term shifts EITHER hand — timer resolution
+        // ignores the positional list, so right-hand capitals still work the way they
+        // always have. Only sub-200ms same-hand '+letter chords resolve as taps (never
+        // shifted, by design). " can't come from '-shift (a key can't shift itself),
+        // so it moved from A-hold+' to macro_layer pos 19.
         default_layer {
             bindings = <
   &kp Q          &kp W      &kp E        &kp R     &kp T                                                  &kp Y               &kp U  &kp I      &kp O    &kp P
-  &hml LSHIFT A  &kp S      &kp D        &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
+  &hml LGUI A    &kp S      &kp D        &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
   &my_lt 2 Z     &kp X      &kp C        &kp V     &kp B                                                  &kp N               &kp M  &kp COMMA  &kp DOT  &my_lt 2 FSLH
   &macro10       &kp LCTRL  &mkp MB2  &mkp MB1  &my_lt 1 SPACE  &lt 7 TAB  &mt RIGHT_GUI ENTER  &my_lt 1 BACKSPACE                             &mkp MB1
             >;
@@ -221,12 +232,16 @@
             >;
         };
 
+        // 2026-06-12 additions: pos 19 = " (rescued from the retired A-hold shift —
+        // hold Z or / then ' = DQT, same finger as ');  pos 25 = ` single backtick,
+        // directly down the Y/H/N column from &code_block at pos 5;  pos 37 = ` the
+        // thumb twin, right beside the thumb &code_block at pos 38.
         macro_layer {
             bindings = <
   &trans    &kp ESC         &trans            &trans      &trans                          &code_block  &zoom_out   &zoom_in     &trans  &trans
-  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &kp UNDER  &word_left  &word_right  &kp QMARK  &trans
-  &trans    &kp PIPE        &trans            &trans      &trans                          &trans  &mkp MB2    &trans       &trans  &trans
-  &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &trans                                   &code_block
+  &kp LBRC  &screenshot     &kp SEMI          &kp COLON   &kp RBRC                        &kp UNDER  &word_left  &word_right  &kp QMARK  &kp DQT
+  &trans    &kp PIPE        &trans            &trans      &trans                          &kp GRAVE  &mkp MB2    &trans       &trans  &trans
+  &trans    &brightness_up  &brightness_down  &launchpad  &mission_control  &mo 6  &mo 6  &kp GRAVE                                &code_block
             >;
         };
 
@@ -239,12 +254,20 @@
             >;
         };
 
-        mouse_layer {
+        // index 4 — RETIRED 2026-06-12 (was mouse_layer: home row became mouse buttons,
+        // D = RCLK). Its ONLY activator was the trackball motion processor
+        // (&zip_temp_mouse 4 300 in the left board .dts base chain), now removed there —
+        // ball jitter kept re-raising it and excluded-positions made it feel stuck.
+        // Kept as an all-&trans placeholder ONLY to preserve hard-coded layer indices:
+        // system(5) via the Q+P combo &sl 5, snipe(6) via &mo 6 + &pmw_listener
+        // layers=<6>, scroll(7) via &lt 7 + layers=<7>. Do NOT delete without
+        // renumbering ALL of those (keymap + left .dts). Free real estate otherwise.
+        retired_layer {
             bindings = <
-  &kp N1    &kp N2    &kp N3  &kp N4     &kp N5                  &kp N6         &kp N7    &kp N8  &kp N9    &kp N0
-  &mkp MB4  &mkp MCLK  &mkp RCLK  &mkp LCLK  &mkp MB5            &kp PAGE_UP    &mkp MB1  &trans  &mkp MB2  &mkp MB3
-  &trans    &trans    &trans  &trans     &trans                  &kp PAGE_DOWN  &trans    &trans  &trans    &trans
-  &trans    &trans    &trans  &trans     &trans  &trans  &trans  &trans                                     &trans
+  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans
             >;
         };
 
