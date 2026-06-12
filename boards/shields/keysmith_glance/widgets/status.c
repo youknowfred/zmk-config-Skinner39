@@ -258,14 +258,17 @@ static void draw_bottom(lv_obj_t *widget, const struct status_state *state) {
     lv_canvas_fill_bg(canvas, LVGL_BACKGROUND, LV_OPA_COVER);
 
     // Draw layer
+    // Only the first ~24 canvas rows survive onto the glass: the bottom canvas
+    // sits at x=-44, so after rotation the visible strip is 24 px deep. The
+    // stock layer text (y=5) proves the band; anything at y>=24 never renders.
     if (state->layer_label == NULL || strlen(state->layer_label) == 0) {
         char text[10] = {};
 
         sprintf(text, "LAYER %i", state->layer_index);
 
-        canvas_draw_text(canvas, 0, 5, 68, &label_dsc, text);
+        canvas_draw_text(canvas, 0, 0, 68, &label_dsc, text);
     } else {
-        canvas_draw_text(canvas, 0, 5, 68, &label_dsc, state->layer_label);
+        canvas_draw_text(canvas, 0, 0, 68, &label_dsc, state->layer_label);
     }
 
     // Draw lock indicators (caps / num) — Keysmith addition
@@ -279,7 +282,7 @@ static void draw_bottom(lv_obj_t *widget, const struct status_state *state) {
     if (strlen(lock_text) > 0) {
         lv_draw_label_dsc_t lock_dsc;
         init_label_dsc(&lock_dsc, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_CENTER);
-        canvas_draw_text(canvas, 0, 32, 68, &lock_dsc, lock_text);
+        canvas_draw_text(canvas, 0, 16, 68, &lock_dsc, lock_text);
     }
 
     // Rotate canvas
