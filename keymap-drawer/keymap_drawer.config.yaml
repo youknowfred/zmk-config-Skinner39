@@ -18,9 +18,10 @@ parse_config:
     "&macro5": "copy/\npaste"
     "&macro6": "alt-tab"
     "&triple_backticks": "```"
+    "&code_block": "```"
     "&macro8": "save\nall"
     "&macro9": "dev\ntools"
-    "&macro10": "regards"
+    "&macro10": "ctrl ↑"   # macro10 label is CTRL_UP these days ("regards" was a previous life)
     "&mkp LCLK": "L-click"
     "&mkp MCLK": "M-click"
     "&mkp RCLK": "R-click"
