@@ -31,6 +31,25 @@ include:
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_RAW_HID_USB=n -DCONFIG_KEYSMITH_GLANCE_HOST_WIDGET=n
     artifact-name: skinner39_left_GLANCE_BLE_nowidget
+  # --- TB-7 status-report images: GLANCE_BLE + device->host telemetry ---
+  # Adds CONFIG_KEYSMITH_STATUS_REPORTS=y on the BLE-first Glance shape:
+  # 32-byte input reports on the same 0xFF60 collection keysmithd opens —
+  # tag 0xB8 layer bitmask (on change + 15 s heartbeat), tag 0xB9 battery
+  # (central + fetched RIGHT level, on change + 60 s heartbeat). Host->device
+  # schema (0xB0-0xB5) untouched; unknown tags are host-ignorable. Spec:
+  # docs/2026-06-12-status-report-channel.md. Flash order: the plain
+  # GLANCE_BLE widget experiment FIRST (one variable at a time), then this.
+  # ⚠ same soak-trap gate as above.
+  - board: skinner39_left/nrf52840/zmk
+    shield: keysmith_glance
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_RAW_HID_USB=n -DCONFIG_KEYSMITH_STATUS_REPORTS=y
+    artifact-name: skinner39_left_GLANCE_BLE_STATUS
+  - board: skinner39_left/nrf52840/zmk
+    shield: keysmith_glance
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_RAW_HID_USB=n -DCONFIG_KEYSMITH_STATUS_REPORTS=y -DCONFIG_KEYSMITH_GLANCE_HOST_WIDGET=n
+    artifact-name: skinner39_left_GLANCE_BLE_STATUS_nowidget
   - board: skinner39_right/nrf52840/zmk
     shield: nice_view
   # --- LEFT diagnostic build (USB logging) — 2026-06-11 soak instrumentation ---

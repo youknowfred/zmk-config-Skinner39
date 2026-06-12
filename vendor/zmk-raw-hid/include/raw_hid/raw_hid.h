@@ -29,3 +29,9 @@ static const uint8_t raw_hid_report_desc[] = {
 
     HID_END_COLLECTION,
 };
+
+#if defined(CONFIG_RAW_HID_BLE)
+/* Local delta vs upstream (see VENDORED.md): true once the bonded host has
+ * enabled notifications on the raw-HID input report. */
+bool raw_hid_ble_subscribed(void);
+#endif

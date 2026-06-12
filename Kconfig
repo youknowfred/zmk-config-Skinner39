@@ -3,3 +3,15 @@
 # or be gated so non-Glance builds are unaffected.
 
 rsource "vendor/zmk-raw-hid/Kconfig"
+
+config KEYSMITH_STATUS_REPORTS
+    bool "Keysmith status reports — device->host layer/battery frames over raw-HID"
+    depends on RAW_HID_BLE
+    help
+      Emits 32-byte input reports on the Glance raw-HID collection:
+      tag 0xB8 = active-layer bitmask (on change + 15 s heartbeat),
+      tag 0xB9 = central + fetched-peripheral battery (on change + 60 s
+      heartbeat). Device->host only; the locked host->device Glance
+      schema (0xB0-0xB5) is untouched. The keysmith TB-7 channel —
+      ground-truth layer attribution + the M11 battery guardrail source.
+      Spec: docs/2026-06-12-status-report-channel.md.

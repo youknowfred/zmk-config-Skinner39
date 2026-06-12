@@ -7,3 +7,7 @@
 # the RAW_HID_USB / RAW_HID_BLE transport split — see vendor/zmk-raw-hid/VENDORED.md).
 # Inert unless CONFIG_RAW_HID=y (its own guard).
 add_subdirectory(vendor/zmk-raw-hid)
+
+# Keysmith status-report channel (TB-7): device->host layer/battery frames on
+# the raw-HID link. Inert unless CONFIG_KEYSMITH_STATUS_REPORTS=y (its guard).
+add_subdirectory(src)

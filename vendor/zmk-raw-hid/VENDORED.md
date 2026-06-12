@@ -15,4 +15,10 @@
   this board dies under the CDC+2×HID composite (boot crash with the widget, ~60 s
   wedge without it, plus the 2026-06-11 CDC-flood kill — see `build.yaml` comments and
   `docs/2026-06-10-split-ble-root-cause-and-fix.md` §5).
-- `src/*.c` and `include/raw_hid/*.h` are byte-identical to upstream.
+- `src/*.c` and `include/raw_hid/*.h` were byte-identical to upstream at vendoring.
+  **Second local delta (2026-06-12, TB-7):** `src/hog.c` + `include/raw_hid/raw_hid.h`
+  gain a CCC tracker on the input-report characteristic (`input_ccc_changed` +
+  `raw_hid_ble_subscribed()`) so device→host senders can gate on the host having
+  enabled notifications instead of erroring pre-subscribe. The GATT attribute
+  table layout is unchanged (`BT_GATT_CCC`'s slot count is identical with or
+  without a handler — `attrs[5]` notify indexing in `send_report` still holds).

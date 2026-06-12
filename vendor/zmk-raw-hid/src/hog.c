@@ -94,6 +94,17 @@ static ssize_t write_ctrl_point(struct bt_conn *conn, const struct bt_gatt_attr 
     return len;
 }
 
+/* Local delta vs upstream (see VENDORED.md): track whether the host has
+ * enabled notifications on the input report, so senders (the keysmith
+ * status-report channel) can stay silent instead of erroring pre-subscribe. */
+static bool input_notify_enabled;
+
+static void input_ccc_changed(const struct bt_gatt_attr *attr, uint16_t value) {
+    input_notify_enabled = (value == BT_GATT_CCC_NOTIFY);
+}
+
+bool raw_hid_ble_subscribed(void) { return input_notify_enabled; }
+
 /* HID Service Declaration */
 BT_GATT_SERVICE_DEFINE(
     raw_hog_svc, BT_GATT_PRIMARY_SERVICE(BT_UUID_HIDS),
@@ -107,7 +118,7 @@ BT_GATT_SERVICE_DEFINE(
     // send to host
     BT_GATT_CHARACTERISTIC(BT_UUID_HIDS_REPORT, BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
                            BT_GATT_PERM_READ_ENCRYPT, NULL, NULL, NULL),
-    BT_GATT_CCC(NULL, BT_GATT_PERM_READ_ENCRYPT | BT_GATT_PERM_WRITE_ENCRYPT),
+    BT_GATT_CCC(input_ccc_changed, BT_GATT_PERM_READ_ENCRYPT | BT_GATT_PERM_WRITE_ENCRYPT),
     BT_GATT_DESCRIPTOR(BT_UUID_HIDS_REPORT_REF, BT_GATT_PERM_READ_ENCRYPT, read_hids_report_ref,
                        NULL, &raw_hid_report_input),
 
