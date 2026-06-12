@@ -1,0 +1,40 @@
+config RAW_HID
+    bool "Enable Raw HID"
+    depends on !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
+
+config RAW_HID_USB
+    bool "Raw HID transport over USB HID"
+    depends on RAW_HID
+    default y
+    imply USB_DEVICE_HID
+    help
+      Compile the USB HID transport (src/usb_hid.c). Uses the legacy
+      hid_ops/usb_hid_register_device API and binds the additional HID
+      instance named by RAW_HID_DEVICE, so a keyboard build needs
+      CONFIG_USB_HID_DEVICE_COUNT=2. Disable for a BLE-only
+      (HID-over-GATT) build that leaves USB enumeration untouched.
+
+config RAW_HID_BLE
+    bool "Raw HID transport over BLE HID-over-GATT"
+    depends on RAW_HID && ZMK_BLE
+    default y
+    help
+      Compile the HID-over-GATT transport (src/hog.c): a second HID
+      service instance carrying the vendor report map, notifying on the
+      active profile's connection. Adds no USB endpoints.
+
+config RAW_HID_USAGE_PAGE
+    hex "Raw HID Usage Page"
+    default 0xFF60
+
+config RAW_HID_USAGE
+    hex "Raw HID Usage"
+    default 0x61
+
+config RAW_HID_REPORT_SIZE
+    int "Raw HID Report Size"
+    default 32
+
+config RAW_HID_DEVICE
+    string "Raw HID Device"
+    default HID_1

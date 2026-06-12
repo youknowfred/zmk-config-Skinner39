@@ -1,0 +1,5 @@
+# Repo-root Zephyr-module Kconfig (mounted via zephyr/module.yml `build.kconfig`).
+# Sourced into every target's Kconfig tree — all symbols here must default off
+# or be gated so non-Glance builds are unaffected.
+
+rsource "vendor/zmk-raw-hid/Kconfig"

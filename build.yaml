@@ -3,12 +3,34 @@ include:
   - board: skinner39_left/nrf52840/zmk
     shield: keysmith_glance
     snippet: studio-rpc-usb-uart
-    # P0-6: raw-HID DISABLED pending the on-device blocker (2026-06-09 bisect):
+    # P0-6 / USB raw-HID: BANNED FROM THIS TARGET (2026-06-09/10 on-device record):
     # with -DCONFIG_RAW_HID=y -DCONFIG_USB_HID_DEVICE_COUNT=2 the full build
-    # crashes at boot (widget) AND even widget-less the USB stack wedges ~60 s
-    # after enumerating, replug unrecoverable, endpoint selection poisoned.
-    # Next attempt is BLE-first (the module's hog.c GATT path, USB transport
-    # off) — see keysmith tracker §5 P0-6. Do not re-add the flags as-is.
+    # crashed at boot (bracketed to the widget delta IN the composite context)
+    # AND even widget-less the USB stack wedged ~60 s after enumerating, replug
+    # unrecoverable, endpoint selection poisoned; the 2026-06-11 DBG-flood
+    # incident independently killed the same stack via CDC alone. Do NOT re-add
+    # LEFT raw-HID-over-USB / the CDC+2xHID composite here. The Glance channel
+    # now rides BLE only — the two GLANCE_BLE artifacts below; this primary
+    # target stays the proven-bootable USB shape (CDC + 1x keyboard HID).
+  # --- P0-6 BLE-first Glance experiments (2026-06-12) — flash-gated artifacts ---
+  # HID-over-GATT raw HID (vendor/zmk-raw-hid hog.c) with the USB transport
+  # COMPILED OUT (-DCONFIG_RAW_HID_USB=n): adds a second HID service to the GATT
+  # table, adds ZERO USB endpoints — USB enumeration is byte-identical to the
+  # primary LEFT target. Two images on purpose: the widget boot-crash was only
+  # ever observed INSIDE the banned USB composite (see keysmith tracker §5
+  # P0-6); BLE-only + widget=y is the designed discriminating experiment, and
+  # the nowidget image is the pre-built fallback if it crashes again.
+  # ⚠ Do not flash while LEFT runs the USB_LOGGING soak trap (docs/ §5).
+  - board: skinner39_left/nrf52840/zmk
+    shield: keysmith_glance
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_RAW_HID_USB=n
+    artifact-name: skinner39_left_GLANCE_BLE
+  - board: skinner39_left/nrf52840/zmk
+    shield: keysmith_glance
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_RAW_HID=y -DCONFIG_RAW_HID_USB=n -DCONFIG_KEYSMITH_GLANCE_HOST_WIDGET=n
+    artifact-name: skinner39_left_GLANCE_BLE_nowidget
   - board: skinner39_right/nrf52840/zmk
     shield: nice_view
   # --- LEFT diagnostic build (USB logging) — 2026-06-11 soak instrumentation ---

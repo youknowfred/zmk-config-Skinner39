@@ -10,9 +10,6 @@ manifest:
     # T1-E: 1-Euro smoothing module (your repo)
     - name: youknowfred
       url-base: https://github.com/youknowfred
-    # P0-6: raw-HID module (keysmith Glance host channel)
-    - name: zzeneg
-      url-base: https://github.com/zzeneg
   projects:
     - name: zmk
       remote: youknowfred
@@ -29,16 +26,14 @@ manifest:
     - name: zmk-input-processor-one-euro
       remote: youknowfred
       revision: 6f9c5432bb7a8cc55169ee945a6fca8824569670
-    - name: zmk-raw-hid
-      remote: zzeneg
-      revision: e25e325adc90fccb60cc08393b8c2b0ba6d647c7  # pinned HEAD ("pin zmk v0.3")
-      # P0-6 (keysmith doc 03 §7): vendor raw-HID 0xFF60/0x61, 32-byte reports.
-      # Its USB glue is the LEGACY hid_ops/usb_hid_register_device API — the SAME
-      # stack ZMK core itself still uses at our zmk pin (the e96a20c fork =
-      # zmkfirmware@26246da + central.c scan-retry only; usb_hid.c untouched),
-      # so the usbd-model port doc 03 §0 #8 anticipated is NOT needed yet; re-check
-      # when zmk migrates to USB_DEVICE_STACK_NEXT. RAW_HID is Kconfig-gated to the
-      # central and enabled LEFT-only via build.yaml cmake-args.
+    # P0-6 raw-HID (keysmith Glance host channel): VENDORED 2026-06-12, no longer a
+    # west project — see vendor/zmk-raw-hid/ (upstream zzeneg/zmk-raw-hid @ e25e325a
+    # + the RAW_HID_USB/RAW_HID_BLE transport split), mounted via the repo-root
+    # module (zephyr/module.yml build.cmake/kconfig). BLE-first per the 2026-06-10
+    # bisect: the legacy USB stack dies under the CDC+2xHID composite, so LEFT
+    # Glance builds run -DCONFIG_RAW_HID=y -DCONFIG_RAW_HID_USB=n (HID-over-GATT
+    # only, zero USB delta). The legacy-vs-usbd port note still stands for the USB
+    # transport: re-check when zmk migrates to USB_DEVICE_STACK_NEXT.
   self:
     path: config
 # Dropped vs fw15 (now built into ZMK core, were breaking the build):
