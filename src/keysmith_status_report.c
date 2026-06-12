@@ -160,6 +160,9 @@ ZMK_SUBSCRIPTION(keysmith_status_battery, zmk_peripheral_battery_state_changed);
 #endif
 
 static int keysmith_status_init(void) {
+    /* Doubles as the artifact strings-probe marker for the STATUS images. */
+    LOG_INF("keysmith status reports armed: layer 0xB8 @ %ds, battery 0xB9 @ %ds",
+            KS_LAYER_HEARTBEAT_S, KS_BATTERY_HEARTBEAT_S);
     k_work_schedule(&ks_layer_heartbeat, K_SECONDS(KS_LAYER_HEARTBEAT_S));
     k_work_schedule(&ks_battery_heartbeat, K_SECONDS(KS_BATTERY_HEARTBEAT_S));
     return 0;
