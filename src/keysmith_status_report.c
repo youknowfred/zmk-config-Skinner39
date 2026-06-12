@@ -159,8 +159,16 @@ ZMK_SUBSCRIPTION(keysmith_status_battery, zmk_battery_state_changed);
 ZMK_SUBSCRIPTION(keysmith_status_battery, zmk_peripheral_battery_state_changed);
 #endif
 
+/* Artifact strings-probe marker. LOG_* strings vanish on the Studio-snippet
+ * builds (CONFIG_LOG=n), so the probe gate needs a plain .rodata tag — the
+ * asm reference below anchors it against --gc-sections via the (kept)
+ * SYS_INIT text. */
+static const char ks_status_fw_tag[] =
+    "keysmith-status-reports v1: layer 0xB8 / battery 0xB9";
+
 static int keysmith_status_init(void) {
-    /* Doubles as the artifact strings-probe marker for the STATUS images. */
+    __asm__ volatile("" ::"r"(ks_status_fw_tag));
+    /* Boot confirmation on logging-enabled builds only. */
     LOG_INF("keysmith status reports armed: layer 0xB8 @ %ds, battery 0xB9 @ %ds",
             KS_LAYER_HEARTBEAT_S, KS_BATTERY_HEARTBEAT_S);
     k_work_schedule(&ks_layer_heartbeat, K_SECONDS(KS_LAYER_HEARTBEAT_S));
