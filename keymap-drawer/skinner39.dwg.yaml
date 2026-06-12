@@ -11,7 +11,7 @@ layers:
   - I
   - O
   - P
-  - {t: A, h: LSHIFT}
+  - {t: A, h: LGUI}
   - S
   - D
   - F
@@ -31,7 +31,7 @@ layers:
   - ','
   - .
   - {t: /, h: macro}
-  - regards
+  - ctrl ↑
   - LCTRL
   - R-click
   - L-click
@@ -86,7 +86,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - '&code_block'
+  - '```'
   - '&zoom_out'
   - '&zoom_in'
   - {t: ▽, type: trans}
@@ -100,13 +100,13 @@ layers:
   - '&word_left'
   - '&word_right'
   - '?'
-  - {t: ▽, type: trans}
+  - '"'
   - {type: held}
   - '|'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '`'
   - R-click
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -118,8 +118,8 @@ layers:
   - '&mission_control'
   - snipe
   - snipe
-  - {t: ▽, type: trans}
-  - '&code_block'
+  - '`'
+  - '```'
   function:
   - F1
   - F2
@@ -160,33 +160,33 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  mouse:
-  - '1'
-  - '2'
-  - '3'
-  - '4'
-  - '5'
-  - '6'
-  - '7'
-  - '8'
-  - '9'
-  - '0'
-  - btn 4
-  - M-click
-  - R-click
-  - L-click
-  - btn 5
-  - PAGE UP
-  - L-click
-  - {t: ▽, type: trans}
-  - R-click
-  - M-click
+  retired:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - PAGE DOWN
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
