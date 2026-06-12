@@ -6,6 +6,16 @@ on:
       - config/**
       - boards/**
       - build.yaml
+      # The repo-root Zephyr module (2026-06-12): firmware code now also lives
+      # in src/ + vendor/, glued by the root Kconfig/CMakeLists/zephyr-module.
+      # A change there without this filter would ship unbuilt (it happened:
+      # 9d822a2 triggered no run).
+      - src/**
+      - vendor/**
+      - Kconfig
+      - CMakeLists.txt
+      - zephyr/**
+      - .github/workflows/build.yml
 
 jobs:
   build:
