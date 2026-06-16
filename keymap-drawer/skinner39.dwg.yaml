@@ -11,7 +11,7 @@ layers:
   - I
   - O
   - P
-  - {t: A, h: LGUI}
+  - {t: A, h: LSHIFT}
   - S
   - D
   - F
@@ -28,7 +28,9 @@ layers:
   - B
   - N
   - M
-  - ','
+  - ',
+
+    2×`'
   - .
   - {t: /, h: macro}
   - ctrl ↑
