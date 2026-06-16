@@ -19,6 +19,7 @@ parse_config:
     "&macro6": "alt-tab"
     "&triple_backticks": "```"
     "&code_block": "```"
+    "&td_comma": ",\n2×`"
     "&macro8": "save\nall"
     "&macro9": "dev\ntools"
     "&macro10": "ctrl ↑"   # macro10 label is CTRL_UP these days ("regards" was a previous life)

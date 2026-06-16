@@ -22,15 +22,17 @@
             label = "HOMEROW_MODS_LEFT";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <200>;      // Reduced from 280ms for faster mod activation
+            tapping-term-ms = <200>;      // Reduced from 280ms for faster shift activation
             quick-tap-ms = <125>;         // Reduced from 175ms
             require-prior-idle-ms = <100>; // Reduced from 150ms
             bindings = <&kp>, <&kp>;
 
-            // 35-38 (TAB / ENTER / BACKSPACE / right MB1 thumbs) added 2026-06-12 for
-            // the A-hold=LGUI era: Cmd+Tab, Cmd+Enter, Cmd+Backspace, Cmd+click.
-            // (33/34 were already here, so Cmd+click-left / Cmd+Space=Spotlight work too.)
-            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29 33 34 35 36 37 38>;
+            // Cross-hand: A's shift engages only when chorded with a RIGHT-hand key
+            // (5-9 / 15-19 / 25-29) or the click/space thumbs (33 34), so same-hand
+            // left rolls never misfire as shift. (Thumbs 35-38 were a 2026-06-12
+            // A=LGUI-era addition for Cmd+Tab/Enter/Backspace; dropped 2026-06-16 with
+            // the LSHIFT restore — A no longer carries a mod that wants those chords.)
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29 33 34>;
             hold-trigger-on-release;
         };
 
@@ -57,6 +59,20 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&mo>, <&kp>;
+        };
+
+        // Double-tap , = ` (single backtick) — base-layer convenience, added 2026-06-16.
+        // Comma chosen because ",," never occurs in real text, so a natural double can't
+        // misfire; and tap-dance flushes the pending comma the instant the NEXT key is
+        // pressed, so mid-sentence commas have no perceptible delay — only a comma typed
+        // as the very last keystroke before a pause waits out the 200ms term. Clean (no
+        // hold to nest), leaves / (pos 29) and its macro-layer hold untouched.
+        td_comma: tap_dance_comma {
+            compatible = "zmk,behavior-tap-dance";
+            label = "TD_COMMA";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp COMMA>, <&kp GRAVE>;
         };
     };
 
@@ -206,19 +222,16 @@
     keymap {
         compatible = "zmk,keymap";
 
-        // 2026-06-12: A-hold = LGUI (was LSHIFT — owner never used it; ' is THE shift,
-        // confirmed by owner, and is untouched). How ' shift actually covers things:
-        // fast chords (<200ms) shift LEFT-hand keys (hmr hold-trigger list), and a
-        // deliberate hold past the 200ms term shifts EITHER hand — timer resolution
-        // ignores the positional list, so right-hand capitals still work the way they
-        // always have. Only sub-200ms same-hand '+letter chords resolve as taps (never
-        // shifted, by design). " can't come from '-shift (a key can't shift itself),
-        // so it moved from A-hold+' to macro_layer pos 19.
+        // 2026-06-16: A-hold = LSHIFT again (reverted the 2026-06-12 A=LGUI experiment
+        // after use — owner wants the left-hand shift back, symmetric with ' = RSHIFT on
+        // the right). The board now has TWO home-row shifts: A (left, hml) and ' (right,
+        // hmr). NOTE: nothing now maps L-GUI as a hold — if the Cmd-hold is wanted again,
+        // rehome it on a free key rather than re-stealing A (ask owner).
         default_layer {
             bindings = <
   &kp Q          &kp W      &kp E        &kp R     &kp T                                                  &kp Y               &kp U  &kp I      &kp O    &kp P
-  &hml LGUI A    &kp S      &kp D        &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
-  &my_lt 2 Z     &kp X      &kp C        &kp V     &kp B                                                  &kp N               &kp M  &kp COMMA  &kp DOT  &my_lt 2 FSLH
+  &hml LSHIFT A  &kp S      &kp D        &kp F     &kp G                                                  &kp H               &kp J  &kp K      &kp L    &hmr RSHIFT SQT
+  &my_lt 2 Z     &kp X      &kp C        &kp V     &kp B                                                  &kp N               &kp M  &td_comma  &kp DOT  &my_lt 2 FSLH
   &macro10       &kp LCTRL  &mkp MB2  &mkp MB1  &my_lt 1 SPACE  &lt 7 TAB  &mt RIGHT_GUI ENTER  &my_lt 1 BACKSPACE                             &mkp MB1
             >;
         };
@@ -232,10 +245,10 @@
             >;
         };
 
-        // 2026-06-12 additions: pos 19 = " (rescued from the retired A-hold shift —
-        // hold Z or / then ' = DQT, same finger as ');  pos 25 = ` single backtick,
-        // directly down the Y/H/N column from &code_block at pos 5;  pos 37 = ` the
-        // thumb twin, right beside the thumb &code_block at pos 38.
+        // pos 19 = " : with A-hold = LSHIFT restored (2026-06-16), A + ' types " again
+        // natively, so this DQT is now just a hold-free convenience on the same finger
+        // (kept, harmless). pos 25 = ` single backtick, down the Y/H/N column from
+        // &code_block at pos 5; pos 37 = ` thumb twin, beside the thumb &code_block (38).
         macro_layer {
             bindings = <
   &trans    &kp ESC         &trans            &trans      &trans                          &code_block  &zoom_out   &zoom_in     &trans  &trans
