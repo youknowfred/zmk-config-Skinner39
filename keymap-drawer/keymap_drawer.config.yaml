@@ -20,6 +20,10 @@ parse_config:
     "&triple_backticks": "```"
     "&code_block": "```"
     "&td_comma": ",\n2×`"
+    "&arrowsel LG(LS(UP)) UP": "↑\n⌘⇧↑"
+    "&arrowsel LG(LS(DOWN)) DOWN": "↓\n⌘⇧↓"
+    "&arrowsel LG(LS(LEFT)) LEFT": "←\n⌘⇧←"
+    "&arrowsel LG(LS(RIGHT)) RIGHT": "→\n⌘⇧→"
     "&macro8": "save\nall"
     "&macro9": "dev\ntools"
     "&macro10": "ctrl ↑"   # macro10 label is CTRL_UP these days ("regards" was a previous life)

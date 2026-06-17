@@ -74,6 +74,24 @@
             tapping-term-ms = <200>;
             bindings = <&kp COMMA>, <&kp GRAVE>;
         };
+
+        // Arrow-to-edge SELECT (the layer-1 arrows): tap = move one; HOLD = select to the
+        // edge in that direction — macOS ⌘⇧+arrow. The behavior lives ON the arrow keys,
+        // so there's no separate modifier to reach for. flavor=tap-preferred + quick-tap:
+        //   • quick tap = move (rapid taps still move N lines/chars, instant on release)
+        //   • deliberate ~200ms hold = select-to-edge
+        //   • tap-then-hold still auto-repeats the plain arrow, so hold-to-repeat isn't lost
+        // Directions:  ↑ ⌘⇧↑ select to doc top      ↓ ⌘⇧↓ select to doc bottom
+        //              ← ⌘⇧← select to line start   → ⌘⇧→ select to line end
+        arrowsel: arrow_select {
+            compatible = "zmk,behavior-hold-tap";
+            label = "ARROW_SELECT";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     macros {
@@ -238,8 +256,8 @@
 
         number_layer {
             bindings = <
-  &kp EXCL  &kp AT     &kp UP    &kp DLLR   &kp PRCNT                  &kp ASTRK  &kp N7  &kp N8  &kp N9  &kp MINUS
-  &kp LPAR  &kp LEFT   &kp DOWN  &kp RIGHT  &kp RPAR                   &kp PIPE   &kp N4  &kp N5  &kp N6  &kp PLUS
+  &kp EXCL  &kp AT  &arrowsel LG(LS(UP)) UP  &kp DLLR  &kp PRCNT                                       &kp ASTRK  &kp N7  &kp N8  &kp N9  &kp MINUS
+  &kp LPAR  &arrowsel LG(LS(LEFT)) LEFT  &arrowsel LG(LS(DOWN)) DOWN  &arrowsel LG(LS(RIGHT)) RIGHT  &kp RPAR  &kp PIPE   &kp N4  &kp N5  &kp N6  &kp PLUS
   &kp CAPS  &kp TILDE  &kp HASH  &kp CARET  &kp EQUAL                  &kp AMPS   &kp N1  &kp N2  &kp N3  &kp N0
   &trans    &trans     &mkp MB2  &mkp MB1   &trans     &trans  &trans  &trans                             &mkp MB1
             >;
